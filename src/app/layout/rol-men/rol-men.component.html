@@ -1,0 +1,121 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">ASIGNAR MENU A ROL</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/home/main">
+                                <i class="fa fa-home"></i> Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Menu a Rol</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Examples -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><strong>Asignar Menu a Rol</strong></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <form>
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button (click)="open(content)" class="btn btn-primary mb-2">Agregar <i class="fa fa-plus"></i>
+                                                              </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <table id="tbl-ListaRoles" class="table table-bordered" style="width:100%">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Sistema</th>
+                                                <th>Rol</th>
+                                                <th>Menu</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of rolMenus | paginate: { itemsPerPage: 7, currentPage: page }">
+                                                <td>{{ item.rolfuncod }}</td>
+                                                <td>{{ item.menu == null ? null : item.menu.sistema.sisnom }}</td>
+                                                <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>
+                                                <td>{{ item.menu == null ? null : item.menu.mennom }}</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-link" (click)="elimnar(item)" title="elimnar"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <ngb-pagination [collectionSize]="total" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Basic Examples -->
+        <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Sistema</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (submit)="registrar()" novalidate>
+                    <label>Rol</label>
+                    <div class="form-group" for="nombre">
+                        <div class="form-line">
+                            <ng-select [items]="roles" bindLabel="rolnom" bindValue="rolcod" formControlName="rolcod">
+                            </ng-select>
+                            <div class="invalid-feedback">Elija el rol</div>
+                        </div>
+                    </div>
+                    <label>Sistema</label>
+                    <div class="form-group">
+                        <ng-select [items]="sistemas" bindLabel="sisnom" (change)="changeSistema()" bindValue="siscod" formControlName="siscod">
+                        </ng-select>
+                        <div class="invalid-feedback">Elija el sistema</div>
+                    </div>
+                    <label>Menu</label>
+                    <div class="form-group">
+                        <ng-select [items]="filtroMenus" bindLabel="mennom" [multiple]="true" bindValue="mencod" formControlName="mencod">
+                        </ng-select>
+                        <div class="invalid-feedback">Elija el menu</div>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                                          <i class="fa fa-save"></i>
+                                          Grabar</button>
+                    <button type="button" class="btn btn-danger waves-effect" (click)="c('Close click')">Cancel</button>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+                    </div> -->
+        </ng-template>
+    </div>
+</section>
