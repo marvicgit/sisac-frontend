@@ -48,21 +48,17 @@
                                     <table id="tbl-ListaRoles" class="table table-bordered" style="width:100%">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Id</th>
                                                 <th>Sistema</th>
                                                 <th>Rol</th>
-                                                <th>Menu</th>
                                                 <th>Funcionalidad</th>
                                                 <th>Func. Sigla</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of rolFuncionalidadades | paginate: { itemsPerPage: 7, currentPage: page }">
-                                                <td>{{ item.rolfuncod }}</td>
-                                                <td>{{ item.rolMenu == null ? null : item.rolMenu.menu.sistema.sisnom }}</td>
-                                                <td>{{ item.rolMenu == null ? null : item.rolMenu.rol.rolnom }}</td>
-                                                <td>{{ item.rolMenu == null ? null : item.rolMenu.menu.mennom }}</td>
+                                            <tr *ngFor="let item of sistemaRolFunc | paginate: { itemsPerPage: 7, currentPage: page }">
+                                                <td>{{ item.sistema == null ? null : item.sistema.sisnom }}</td>
+                                                <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>
                                                 <td>{{ item.funcionalidad == null ? null : item.funcionalidad.funnom }}</td>
                                                 <td>{{ item.funcionalidad == null ? null : item.funcionalidad.funsig }}</td>
                                                 <td>
@@ -91,25 +87,19 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="form" (submit)="registrar()" novalidate>
-                    <label>Rol</label>
-                    <div class="form-group" for="nombre">
-                        <div class="form-line">
-                            <ng-select [items]="roles" bindLabel="rolnom" bindValue="rolcod" formControlName="rolcod">
-                            </ng-select>
-                            <div class="invalid-feedback">Elija el rol</div>
-                        </div>
-                    </div>
                     <label>Sistema</label>
                     <div class="form-group">
                         <ng-select [items]="sistemas" bindLabel="sisnom" (change)="changeSistema()" bindValue="siscod" formControlName="siscod">
                         </ng-select>
                         <div class="invalid-feedback">Elija el sistema</div>
                     </div>
-                    <label>Menu</label>
-                    <div class="form-group">
-                        <ng-select [items]="filtroMenus" bindLabel="mennom" [multiple]="true" bindValue="mencod" formControlName="mencod">
-                        </ng-select>
-                        <div class="invalid-feedback">Elija el menu</div>
+                    <label>Rol</label>
+                    <div class="form-group" for="nombre">
+                        <div class="form-line">
+                            <ng-select [items]="filtroRoles" bindLabel="rolnom" bindValue="rolcod" formControlName="rolcod">
+                            </ng-select>
+                            <div class="invalid-feedback">Elija el rol</div>
+                        </div>
                     </div>
                     <label>Funcionalidades</label>
                     <div class="form-group">
@@ -123,9 +113,6 @@
                     <button type="button" class="btn btn-danger waves-effect" (click)="c('Close click')">Cancel</button>
                 </form>
             </div>
-            <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-                    </div> -->
         </ng-template>
     </div>
 </section>

@@ -1,6 +1,5 @@
-import { Sistema } from './sistema';
-import { Rol } from './rol';
 export class SistemaRolDTO {
-    public sistema: Sistema;
-    public rol: Rol;
+    public siscod: number = 0;
+    public rolcod: number = 0;
+    public rolnom: string = '';
 }

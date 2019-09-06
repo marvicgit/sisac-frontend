@@ -57,7 +57,7 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let item of rolMenus | paginate: { itemsPerPage: 7, currentPage: page }">
-                                                <td>{{ item.rolfuncod }}</td>
+                                                <td>{{ item.rolmencod }}</td>
                                                 <td>{{ item.menu == null ? null : item.menu.sistema.sisnom }}</td>
                                                 <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>
                                                 <td>{{ item.menu == null ? null : item.menu.mennom }}</td>

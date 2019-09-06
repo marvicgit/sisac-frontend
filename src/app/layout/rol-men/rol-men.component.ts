@@ -49,7 +49,6 @@ export class RolMenComponent implements OnInit {
 
   llenarGrid() {
     this.service.listar().subscribe( data => {   
-      console.log(data); 
       this.rolMenus = data;
       this.total = data.length;
     })

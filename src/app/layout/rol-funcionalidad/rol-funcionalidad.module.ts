@@ -25,4 +25,5 @@ import { SharedPipesModule } from '../../shared/pipes/shared-pipes.module';
     SharedPipesModule
   ]
 })
+
 export class RolFuncionalidadModule { }

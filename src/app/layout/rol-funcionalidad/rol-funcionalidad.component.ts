@@ -10,12 +10,14 @@ import { MenuService } from '../menu/menu.service';
 import { Funcionalidad } from '../../models/funcionalidad';
 import { FuncionalidadService } from '../funcionalidad/funcionalidad.service';
 
-import { RolMenuFuncDTO } from '../../models/rolMenuFuncDTO';
 import { RolMenuFun } from '../../models/rolmenfun';
 import { RolMenu } from '../../models/rolMenu';
 import Swal from 'sweetalert2'
 import { RolFuncionalidadService } from './rol-funcionalidad.service';
-import { RolFuncionalidad } from '../../models/rolFuncionalidad';
+import { RolFuncionalidadDTO } from '../../models/rolFuncionalidadDTO';
+import { RolMenService } from '../rol-men/rol-men.service';
+import { SistemaRolDTO } from '../../models/sistemaRolDTO';
+import { SisRolFuncionalidadDTO } from 'src/app/models/sisRolFuncionalidadDTO';
 
 @Component({
   selector: 'app-rol-funcionalidad',
@@ -26,17 +28,20 @@ export class RolFuncionalidadComponent implements OnInit {
 
   form: FormGroup;
   page: number = 0;
-  rolFuncionalidadades: RolFuncionalidad[] = [];
+  sistemasRoles: SistemaRolDTO[] = [];
+  filtroRoles: SistemaRolDTO[] = [];
   total: number = 0;
   roles: Rol[];
   sistemas: Sistema[];
   menus: Menu[];
   filtroMenus: Menu[];
   funcionalidades: Funcionalidad[];
+  sistemaRolFunc: SisRolFuncionalidadDTO[];
   closeResult: string;
   constructor(private formBuilder: FormBuilder, 
               private modalService: NgbModal,
               private service: RolFuncionalidadService,
+              private serviceRolMenu: RolMenService,
               private config: NgbModalConfig, 
               private serviceSistema: SistemaService,
               private serviceMenu: MenuService,
@@ -48,18 +53,22 @@ export class RolFuncionalidadComponent implements OnInit {
 
   ngOnInit() {
     this.iniciarForm();
+    this.listaRolMenus();
     this.llenarGrid();
-    // this.listarRol();
-    // this.listarSistema();
-    // this.listarMenu();
-    // this.listarFuncionalidades();
+    this.listarSistema();
+    this.listarFuncionalidades();
   }
 
   llenarGrid() {
-    this.service.listar().subscribe( data => {   
-      console.log(data); 
-      this.rolFuncionalidadades = data;
+    this.service.listar().subscribe( data => {    
+      this.sistemaRolFunc = data;
       this.total = data.length;
+    })
+  }
+
+  listaRolMenus() {
+    this.serviceRolMenu.listarSistemaRol().subscribe( data => {     
+      this.sistemasRoles = data;
     })
   }
 
@@ -90,7 +99,6 @@ export class RolFuncionalidadComponent implements OnInit {
   iniciarForm() {
     this.form = this.formBuilder.group({
       siscod: new FormControl('', Validators.required),
-      mencod: new FormControl('', Validators.required),
       rolcod: new FormControl('', Validators.required),
       funcod: new FormControl(''),
       estreg: new FormControl('1'),
@@ -101,29 +109,21 @@ export class RolFuncionalidadComponent implements OnInit {
 
   registrar() {
     
-    let lstMenu: Menu[] = [];
+
     let lstFuncionalidad: Funcionalidad[] = [];
-
-    this.form.get('mencod').value.forEach(function(l) {
-       let menu: Menu = new Menu();
-       menu.mencod = l;
-      lstMenu.push(menu);
-    });
-
 
     this.form.get('funcod').value.forEach(function(l) {
       let fun: Funcionalidad = new Funcionalidad();
       fun.funcod = l;
       lstFuncionalidad.push(fun);
    });
-
-    if(this.form.valid) {
-      let datos: RolMenuFuncDTO = new RolMenuFuncDTO();
-      datos.rol = new Rol();
-      datos.rol.rolcod = this.form.get('rolcod').value;
-      datos.lstMenus = lstMenu;
-      datos.lstFuncionalidad = lstFuncionalidad;
+    console.log(this.form.valid);
     
+    if(this.form.valid) {
+      let datos: RolFuncionalidadDTO = new RolFuncionalidadDTO();
+      datos.siscod = this.form.get('siscod').value;
+      datos.rolcod = this.form.get('rolcod').value;
+      datos.lstFuncionalidad = lstFuncionalidad;
       
       this.service.registrar(datos).subscribe(data =>{
         console.log(data);
@@ -137,13 +137,13 @@ export class RolFuncionalidadComponent implements OnInit {
               timer: 1500
             });
             this.llenarGrid();
-          });
+      });
     }
   }
 
   changeSistema() {
     let id: number = this.form.get('siscod').value
-    this.filtroMenus = this.menus.filter(x => x.sistema.siscod === id);
+    this.filtroRoles = this.sistemasRoles.filter(x => x.siscod === id);  
   }
 
   open(content, data?: RolMenu) {
@@ -168,7 +168,7 @@ export class RolFuncionalidadComponent implements OnInit {
     }
   }
 
-  elimnar(data: RolMenuFun){
+  elimnar(data: SisRolFuncionalidadDTO){
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
       text: "No podras revertirlo!",
@@ -180,7 +180,7 @@ export class RolFuncionalidadComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.rolmenfuncod).subscribe( data => {
+        this.service.eliminar(data).subscribe(data => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',

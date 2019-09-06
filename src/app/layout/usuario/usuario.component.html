@@ -69,6 +69,7 @@
                                                 <td><span class="badge" [ngClass]="{'badge-success': item.estreg == '1', 'badge-danger': item.estreg == '0' }">{{ item.estreg.trim() == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="popudSistema(modalsistema, item)"><i class="fa fa-desktop"></i></button>
+                                                    <button class="btn btn-sm btn-link" (click)="popudSisRoles(modalsisrol, item)"><i class="fa fa-desktop"></i></button>
                                                     <button class="btn btn-sm btn-link" (click)="open(content, item)"><i class="fa fa-pencil"></i></button>
                                                     <button class="btn btn-sm btn-link" (click)="Elimnar()"><i class="fa fa-trash"></i></button>
                                                 </td>
@@ -104,7 +105,6 @@
                             <ngb-tab id="contacto" title="Contacto"></ngb-tab>
                             <ngb-tab id="social" title="Social"></ngb-tab>
                             <ngb-tab id="configuracion" title="Config"></ngb-tab>
-                            <ngb-tab id="sistema" title="Sistema"></ngb-tab>
                         </ngb-tabset>
                     </div>
                     <div class="col-sm-9">
@@ -117,42 +117,8 @@
                                 <label>Contraseña</label>
                                 <input class="form-control" formControlName="usupas" placeholder="Contraseña" name="usupas" type="password">
                             </div>
-                            <!-- <div class="form-group">
-                                <label>Rol</label>
-                                <ng-select [items]="roles  | async" bindLabel="rolnom" bindValue="rolcod" formControlName="rolcod">
-                                </ng-select>
-                                <div class="invalid-feedback">Elija el rol</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Funcionalidad</label>
-                                <ng-select [items]="funcionalidades  | async" bindLabel="funnom" [multiple]="true" bindValue="funcod" formControlName="funcod">
-                                </ng-select>
-                                <div class="invalid-feedback">Elija la funcionalidad</div>
-                            </div> -->
                         </div>
                         <div [hidden]="selectedTabId != 'personal'">
-                            <!-- <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Tipo Doc.</label>
-                                    <select class="custom-select" [ngClass]="{'is-valid': form.get('usutipdoc').valid, 'is-invalid': form.get('usutipdoc').invalid }" formControlName="usutipdoc">
-                                                <option value="1">DNI</option>
-                                                <option value="2">CE</option>
-                                                <option value="3">LIB</option>
-                                                <option value="4">PTP</option>
-                                                <option value="5">RUC</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Seleccione.
-                                    </div>
-                                </div>
-                                <div class="form-group col-8">
-                                    <label>Número</label>
-                                    <input class="form-control" [ngClass]="{'is-valid': form.get('usudni').valid, 'is-invalid': form.get('usudni').invalid }" formControlName="usudni" placeholder="Número" name="usudni" type="text">
-                                    <div class="invalid-feedback">
-                                        Ingrese el nro documento.
-                                    </div>
-                                </div> 
-                            </div>-->
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label>Tipo Doc.</label>
@@ -299,25 +265,6 @@
                                 <label class="custom-control-label" for="checkboxDeleted">Inactivo</label>
                             </div>
                         </div>
-                        <div [hidden]="selectedTabId != 'sistema'">
-                            <div class="form-group">
-                                <label>Sistema</label>
-                                <ng-select [items]="sistemas" bindLabel="sisnom" [multiple]="true" bindValue="siscod" formControlName="siscod">
-                                </ng-select>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label>Rol</label>
-                                <ng-select [items]="roles  | async" bindLabel="rolnom" bindValue="rolcod" formControlName="rolcod">
-                                </ng-select>
-                                <div class="invalid-feedback">Elija el rol</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Funcionalidad</label>
-                                <ng-select [items]="funcionalidades  | async" bindLabel="funnom" [multiple]="true" bindValue="funcod" formControlName="funcod">
-                                </ng-select>
-                                <div class="invalid-feedback">Elija la funcionalidad</div>
-                            </div> -->
-                        </div>
                     </div>
                     <div class="col-12 bg-white">
                         <button class="btn btn-success mr-1" type="submit">Grabar</button>
@@ -328,24 +275,42 @@
         </ng-template>
         <ng-template #modalsistema let-c="close" let-d="dismiss">
             <div class="modal-header">
-                <h4 class="modal-title">Sistema</h4>
+                <h4 class="modal-title">Asignar Sistema</h4>
                 <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                           <span aria-hidden="true">&times;</span>
                       </button>
             </div>
             <div class="modal-body">
-                <label>Sistemas</label>
-                <div class="form-line">
-                    <ng-select [items]="sistemas" bindLabel="sisnom" bindValue="siscod" [(ngModel)]="idSistema" (change)="changeSistema()" name="idSistema">
-                    </ng-select>
-                </div>
-                <dual-list [sort]="sorter" [source]="sistemaRolesFil" [key]="key" [display]="display" [filter]="filter" [(destination)]="sistemasSelect" [format]="format" height="265px"></dual-list>
-
+                <label>Sistema</label>
+                <dual-list [sort]="sorter" [source]="sistemasAptos" [key]="siscod" [display]="sisnom" [filter]="filter" [(destination)]="sistemasSelect" [format]="format" height="265px"></dual-list>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="grabarSistema()">Aceptar</button>
-                <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancelar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Cancelar</button>
             </div>
         </ng-template>
+        <ng-template #modalsisrol let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Asignar Rol</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+            </div>
+            <div class="modal-body">
+                <label>Sistemas</label>
+                <div class="form-line">
+                    <ng-select [items]="sistemasSelect" bindLabel="sisnom" bindValue="siscod" [(ngModel)]="idSistema" (change)="changeSistema()" name="idSistema">
+                    </ng-select>
+                </div>
+                <label>Roles</label>
+                <dual-list [sort]="sorter" [source]="rolesFiltrados" [key]="rolcod" [display]="rolnom" [filter]="filter" [(destination)]="rolesSelect" [format]="format" height="265px"></dual-list>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="grabarSistemaRol()">Aceptar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Cancelar</button>
+            </div>
+        </ng-template>
+
     </div>
 </section>
