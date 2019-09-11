@@ -14,9 +14,6 @@ export class Usuario {
     public usuarea: string = '';
     public usucargo: string = '';
     public usudirec: string = '';
-    public usuface: string = '';
-    public usugoogle: string = '';
-    public usutwitter: string = '';
     public ususexo: number = 0;
     public usureg: string = '';
     public fecreg: string = '';

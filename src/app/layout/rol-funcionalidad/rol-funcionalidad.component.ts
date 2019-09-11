@@ -68,7 +68,7 @@ export class RolFuncionalidadComponent implements OnInit {
 
   listaRolMenus() {
     this.serviceRolMenu.listarSistemaRol().subscribe( data => {     
-      this.sistemasRoles = data;
+      this.sistemasRoles = data;      
     })
   }
 
@@ -108,8 +108,6 @@ export class RolFuncionalidadComponent implements OnInit {
   }
 
   registrar() {
-    
-
     let lstFuncionalidad: Funcionalidad[] = [];
 
     this.form.get('funcod').value.forEach(function(l) {
@@ -180,7 +178,7 @@ export class RolFuncionalidadComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data).subscribe(data => {
+        this.service.eliminar(data.sisrolfuncod).subscribe(data => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',

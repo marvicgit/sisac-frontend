@@ -1,0 +1,20 @@
+<div *ngIf="!tokenValido">
+    La petición no es válida o ha expirado :(</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="tokenValido">
+    <div class="example-container">
+        <div>
+            <input type="password" name="password" placeholder="Nueva contraseña" formControlName="password" [formGroup]="form" required>
+        </div>
+
+        <div>
+            <input type="password" placeholder="Repetir contraseña" formControlName="confirmPassword" [formGroup]="form" required>
+        </div>
+
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Cambiar contraseña</button>
+        <button class="btn btn-primary" type="button" routerLink="/login" *ngIf="rpta === 1">Ir a Login</button>
+        <div *ngIf="form.controls.confirmPassword.errors?.MatchPassword">Constraseñas no coinciden</div>
+        <div *ngIf="mensaje">{{mensaje}}</div>
+        <div *ngIf="error">{{error}}</div>
+    </div>
+</form>

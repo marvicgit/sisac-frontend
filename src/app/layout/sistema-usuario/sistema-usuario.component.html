@@ -5,13 +5,13 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <ul class="breadcrumb breadcrumb-style ">
                         <li class="breadcrumb-item">
-                            <h4 class="page-title">ASIGNAR FUNCIONALIDAD A ROL</h4>
+                            <h4 class="page-title">ASIGNAR SISTEMA</h4>
                         </li>
                         <li class="breadcrumb-item bcrumb-1">
                             <a routerLink="/home/main">
                                 <i class="fa fa-home"></i> Home</a>
                         </li>
-                        <li class="breadcrumb-item active">Funcionalidad a Rol</li>
+                        <li class="breadcrumb-item active">Asignar Sistema</li>
                     </ul>
                 </div>
             </div>
@@ -21,7 +21,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2><strong>Asignar Funcionalidad a Rol</strong></h2>
+                        <h2><strong>Asignar Sistema</strong></h2>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -37,7 +37,7 @@
                                             </div>
                                             <div class="col-auto">
                                                 <button (click)="open(content)" class="btn btn-primary mb-2">Agregar <i class="fa fa-plus"></i>
-                                                              </button>
+                                                                  </button>
                                             </div>
                                         </div>
                                     </form>
@@ -51,18 +51,16 @@
                                                 <th>Id</th>
                                                 <th>Sistema</th>
                                                 <th>Rol</th>
-                                                <th>Funcionalidad</th>
-                                                <th>Func. Sigla</th>
+                                                <th>Usuario</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of sistemaRolFunc | paginate: { itemsPerPage: 7, currentPage: page }">
-                                                <td>{{ item.sisrolfuncod }}</td>
+                                            <tr *ngFor="let item of usuarioSistemas | paginate: { itemsPerPage: 7, currentPage: page }">
+                                                <td>{{ item.ususisrolcod }}</td>
                                                 <td>{{ item.sistema == null ? null : item.sistema.sisnom }}</td>
                                                 <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>
-                                                <td>{{ item.funcionalidad == null ? null : item.funcionalidad.funnom }}</td>
-                                                <td>{{ item.funcionalidad == null ? null : item.funcionalidad.funsig }}</td>
+                                                <td>{{ item.usuario == null ? null : item.usuario.usulog }}</td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="elimnar(item)" title="elimnar"><i class="fa fa-trash"></i></button>
                                                 </td>
@@ -84,11 +82,17 @@
             <div class="modal-header">
                 <h4 class="modal-title">Sistema</h4>
                 <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
+                              <span aria-hidden="true">&times;</span>
+                          </button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="form" (submit)="registrar()" novalidate>
+                    <label>Usuario</label>
+                    <div class="form-group">
+                        <ng-select [items]="usuarios" bindLabel="usulog" bindValue="usucod" formControlName="usucod">
+                        </ng-select>
+                        <div class="invalid-feedback">Elija el sistema</div>
+                    </div>
                     <label>Sistema</label>
                     <div class="form-group">
                         <ng-select [items]="sistemas" bindLabel="sisnom" (change)="changeSistema()" bindValue="siscod" formControlName="siscod">
@@ -98,20 +102,13 @@
                     <label>Rol</label>
                     <div class="form-group" for="nombre">
                         <div class="form-line">
-                            <ng-select [items]="filtroRoles" bindLabel="rol.rolnom" bindValue="rol.rolcod" formControlName="rolcod">
+                            <ng-select [items]="rolesFiltrados" bindLabel="rol.rolnom" bindValue="rol.rolcod" formControlName="rolcod">
                             </ng-select>
                             <div class="invalid-feedback">Elija el rol</div>
                         </div>
                     </div>
-                    <label>Funcionalidades</label>
-                    <div class="form-group">
-                        <ng-select [items]="funcionalidades" bindLabel="funnom" [multiple]="true" bindValue="funcod" formControlName="funcod">
-                        </ng-select>
-                        <div class="invalid-feedback">Elija la funcionalidad</div>
-                    </div>
                     <button type="submit" class="btn btn-success">
-                                          <i class="fa fa-save"></i>
-                                          Grabar</button>
+                        <i class="fa fa-save"></i>Grabar</button>
                     <button type="button" class="btn btn-danger waves-effect" (click)="c('Close click')">Cancel</button>
                 </form>
             </div>

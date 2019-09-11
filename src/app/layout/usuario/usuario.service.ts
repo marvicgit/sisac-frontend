@@ -17,6 +17,10 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(this.url);
   }
 
+  buscarUsuarioLdap(usulog: string){
+    return this.http.get<Usuario>(`${this.url}/BuscarUsuarioLdap/${usulog}`);
+  }
+
   registrar(data: Usuario) {
     return this.http.post(this.url, data);
   }

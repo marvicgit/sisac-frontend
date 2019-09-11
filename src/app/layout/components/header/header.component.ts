@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { LoginService } from '../../../login/login.service';
 
 @Component({
     selector: 'app-header',
@@ -10,7 +11,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(private translate: TranslateService,
+                public router: Router,
+                private service: LoginService ) {
 
         this.router.events.subscribe(val => {
             if (
@@ -43,7 +46,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
+        this.service.cerrarSesion();
     }
 
     changeLang(language: string) {

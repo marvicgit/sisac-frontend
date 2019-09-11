@@ -33,40 +33,12 @@ export class UsuarioComponent implements OnInit {
   page: number = 0;
   total: number = 0;
   closeResult: string;
-  sistemasAptos: UsuarioSistemaDTO[] = [];
-  siscod: string = 'siscod';
-  sisnom: any = 'sisnom';
-  sistemasSelect: UsuarioSistemaDTO[] = [];
-  sistemasUsuarios: UsuarioSistemaDTO[] = [];
-  sistemasRolApto: UsuarioSistemaRolDTO[] = [];
-  sistemasRolUsuarios : UsuarioSistemaRolDTO[] = [];
-  rolesFiltrados: UsuarioSistemaRolDTO[] = [];
-  rolesSelect: UsuarioSistemaRolDTO[] = [];
-  rolcod: string = 'rolcod';
-  rolnom: any = 'rolnom';
-  
-  sorter = true;
-  filter = true;
-  roles: Observable<Rol[]>;
-  rolesMenus: RolMenu[] = [];
-  sistemaRoles: SistemaRolDTO[] = [];
-  sistemaRolesFil: SistemaRolDTO[] = [];
-  funcionalidades: Observable<Funcionalidad[]>;
-  idSistema: number = 0;
-  idUsuarioSelect: number =0;
   usuarios: Usuario[];
-  format = { add: 'Agregar', remove: 'Elimnar', all: 'Todos', none: 'Ninguno',
-        direction: DualListComponent.LTR, draggable: true, locale: 'es' }
 
   constructor(private formBuilder: FormBuilder,
               private modalService: NgbModal, 
               config: NgbModalConfig,
               private service: UsuarioService, 
-              private serviceSistema: SistemaService,
-              private serviceRolMenu: RolMenService,
-              private serviceRol: RolService,
-              private serviceFuncion: FuncionalidadService,
-              private serviceUsuRolFun :UsuarioRolFunService,
               private router: Router) { 
                 config.backdrop = 'static';
                 config.keyboard = false;
@@ -75,13 +47,6 @@ export class UsuarioComponent implements OnInit {
   ngOnInit() {
     this.iniciarForm();
     this.listar();
-    this.listarSistemasAptos();
-    this.listarSistemasUsuarios();
-    this.listarSistemaRolAptos();
-    this.listarUsuarioSistemaRol();
-    //this.listaRolMenus()
-    // this.roles = this.serviceRol.getRoles();
-    // this.funcionalidades = this.serviceFuncion.getFuncionalidades();
   }
 
   iniciarForm() {
@@ -96,18 +61,13 @@ export class UsuarioComponent implements OnInit {
       usuarea:  new FormControl(null),
       usucargo:  new FormControl(null),
       usudirec:  new FormControl(null),
-      usuface:  new FormControl(null),
-      usutwitter:  new FormControl(null),
-      usugoogle:  new FormControl(null),
-      estreg: new FormControl('1'),
+      usuest: new FormControl('1'),
       usulog: new FormControl(null, Validators.required),
-      rolcod: new FormControl(null),
       usupas: new FormControl(null, Validators.required),
       usucor: new FormControl(null, [Validators.required, Validators.email]),
       usuanexo: new FormControl(null),
       usureg: '',
-      usumod: '',
-      siscod: new FormControl(null)
+      usumod: ''
       });
   }
 
@@ -127,40 +87,6 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  listarSistemasAptos() {
-    this.serviceUsuRolFun.listarSistemasAptos().subscribe((data: UsuarioSistemaDTO[]) => {     
-      this.sistemasAptos = data;     
-    });
-  }
-
-  listarSistemasUsuarios() {
-    this.serviceUsuRolFun.listarSistemasUsuarios().subscribe((data: UsuarioSistemaDTO[]) => {     
-      this.sistemasUsuarios = data;
-      this.total = data.length;     
-    });
-  }
-
-  listarSistemaRolAptos() {
-    this.serviceUsuRolFun.listarSistemaRolAptos().subscribe((data: UsuarioSistemaRolDTO[]) => {     
-      this.sistemasRolApto = data;           
-    });
-  }
-
-  listarUsuarioSistemaRol() {
-    this.serviceUsuRolFun.listarUsuarioSistemaRol().subscribe((data: UsuarioSistemaRolDTO[]) => {     
-      this.sistemasRolUsuarios = data;
-      this.total = data.length;     
-    });
-  }
-  
-  changeSistema() {
-    let id: number = this.idSistema;
-    this.rolesFiltrados = this.sistemasRolApto.filter(x => x.siscod === id);  
-    this.rolesSelect = this.sistemasRolUsuarios.filter(x => x.usucod === this.idUsuarioSelect && x.siscod === id);
-     console.log(this.rolesFiltrados);
-        
-  }
-
   openUsuario(data?: Usuario) {
     if(data != null) {
         //this.form.setValue(data);
@@ -170,9 +96,16 @@ export class UsuarioComponent implements OnInit {
     
   }
 
+  buscarUsuarioLdap(){
+    this.service.buscarUsuarioLdap(this.form.get('usulog').value).subscribe(data => {
+      this.form.get('usucor').setValue(data.usucor)
+      this.form.get('usunom').setValue(data.usunom);
+    });
+  }
+
   open(content, data?: Usuario) {
     this.selectedTabId = 'acceso';
-    if(data != null) {
+    if(data != null) {      
       this.form.get('usucod').setValue(data.usucod);
       this.form.get('usutipdoc').setValue(data.usutipdoc);
       this.form.get('usudni').setValue(data.usudni);
@@ -183,14 +116,12 @@ export class UsuarioComponent implements OnInit {
       this.form.get('usuarea').setValue(data.usuarea);
       this.form.get('usucargo').setValue(data.usucargo);
       this.form.get('usudirec').setValue(data.usudirec);
-      this.form.get('usuface').setValue(data.usuface);
-      this.form.get('usutwitter').setValue(data.usutwitter);
-      this.form.get('usugoogle').setValue(data.usugoogle);
-      this.form.get('estreg').setValue(data.estreg);
+      this.form.get('usuest').setValue(data.usuest.toString());
       this.form.get('usulog').setValue(data.usulog);
       this.form.get('usupas').setValue(data.usupas);
       this.form.get('usucor').setValue(data.usucor);
-      this.form.get('usuanexo').setValue(data.usuanexo);
+      this.form.get('usuanexo').setValue(data.usuanexo);      
+      
     } else {
        this.iniciarForm();
     }
@@ -203,97 +134,6 @@ export class UsuarioComponent implements OnInit {
 
   }
   
-  popudSistema(modalsistema, data?: Usuario) {
-    this.selectedTabId = 'acceso';
-    if(data != null) {
-      this.idUsuarioSelect = data.usucod;
-      this.sistemasSelect;
-      
-      this.sistemasSelect = this.sistemasUsuarios.filter(x => x.usucod === data.usucod);
-      // this.sistemasUsuarios
-      // this.sistemasSelect.push( this.stations[31] );
-    } else {
-       this.iniciarForm();
-    }
-    
-    this.modalService.open(modalsistema, { size: 'lg' }).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-
-  }
-
-  popudSisRoles(modalsisrol, data?: Usuario) {
-    this.selectedTabId = 'acceso';
-    if(data != null) {
-      this.idUsuarioSelect = data.usucod;
-      // this.sistemasSelect;
-      
-       this.sistemasSelect = this.sistemasUsuarios.filter(x => x.usucod === data.usucod);
-      // this.sistemasUsuarios
-      // this.sistemasSelect.push( this.stations[31] );
-    } else {
-       this.iniciarForm();
-    }
-    
-    this.modalService.open(modalsisrol, { size: 'lg' }).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-
-  }
-
-  grabarSistema(){
-    console.log(this.sistemasSelect);
-    let datos: UsuarioSisRolDTO = new UsuarioSisRolDTO();
-    datos.usuario = new Usuario();
-    datos.usuario.usucod = this.idUsuarioSelect;
-    datos.lstRol = null;
-    datos.lstSistema = this.sistemasSelect;
-    
-    this.serviceUsuRolFun.registrar(datos).subscribe(data =>{
-      console.log(data);
-       
-          this.modalService.dismissAll();
-          Swal.fire({
-            position: 'top-end',
-            type: 'success',
-            title: 'Registrado correctamente',
-            showConfirmButton: false,
-            timer: 1500
-          });
-          //this.llenarGrid();
-    });
-  }
-
-  grabarSistemaRol(){
-    //console.log(this.rolesSelect);
-    let datos: UsuarioSisRolDTO = new UsuarioSisRolDTO();
-    datos.usuario = new Usuario();
-    datos.usuario.usucod = this.idUsuarioSelect;
-    datos.lstRol = this.rolesSelect
-    
-    console.log(datos);
-    
-    this.serviceUsuRolFun.registrar(datos).subscribe(data =>{
-      console.log(data);
-       
-          this.modalService.dismissAll();
-          Swal.fire({
-            position: 'top-end',
-            type: 'success',
-            title: 'Registrado correctamente',
-            showConfirmButton: false,
-            timer: 1500
-          });
-          //this.llenarGrid();
-    });
-  }
-
-  
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
         return 'by pressing ESC';
@@ -305,6 +145,8 @@ export class UsuarioComponent implements OnInit {
   } 
 
   registrar() {
+    console.log(this.form.valid);
+    
     if (this.form.valid) {
       if (this.form.get('usucod').value == null) {
         this.form.get('usureg').setValue('1');

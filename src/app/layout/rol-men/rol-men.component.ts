@@ -96,6 +96,7 @@ export class RolMenComponent implements OnInit {
 
     if(this.form.valid) {
       let datos: RolMenuDTO = new RolMenuDTO();
+      datos.siscod = this.form.get('siscod').value;
       datos.rol = new Rol();
       datos.rol.rolcod = this.form.get('rolcod').value;
       datos.lstMenus = lstMenu;

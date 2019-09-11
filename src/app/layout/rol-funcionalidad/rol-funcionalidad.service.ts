@@ -8,7 +8,7 @@ import { SisRolFuncionalidadDTO } from 'src/app/models/sisRolFuncionalidadDTO';
   providedIn: 'root'
 })
 export class RolFuncionalidadService {
-  url: string = `${environment.HOST_URL}/rolesMenusFunc`;  
+  url: string = `${environment.HOST_URL}/sistemaRolesFunc`;  
   constructor(private http: HttpClient) { }
 
   listar() {
@@ -21,9 +21,7 @@ export class RolFuncionalidadService {
     return this.http.post(this.url, data);
   }
   
-  eliminar(data: SisRolFuncionalidadDTO) {
-    console.log(data);
-    
-    return this.http.post(`${this.url}/eliminarRolMenFunc`, data);
+  eliminar(id: number) {    
+    return this.http.delete(`${this.url}/${id}`);
   }
 }

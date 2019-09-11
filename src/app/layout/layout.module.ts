@@ -8,6 +8,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthGuard } from '../shared';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     LayoutRoutingModule,
     TranslateModule,
     NgbDropdownModule
-  ]
+  ],
+  providers: [AuthGuard],
 })
 export class LayoutModule { }
