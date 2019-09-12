@@ -13,11 +13,13 @@ import * as materialTheme from '../../ng-select/themes/material.theme.css';
 })
 export class LayoutComponent implements OnInit {
 
+  username: string;
   collapedSideBar: boolean;
   theme = 'Default theme';
   title = 'personal';
   private style: HTMLStyleElement;
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit() {}
 

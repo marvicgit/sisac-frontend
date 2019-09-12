@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoginService } from '../../../login/login.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-header',
@@ -10,11 +11,11 @@ import { LoginService } from '../../../login/login.service';
 })
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
-
+    username: string;
     constructor(private translate: TranslateService,
                 public router: Router,
                 private service: LoginService ) {
-
+        this.username = sessionStorage.getItem(environment.TOKE_USER);
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&

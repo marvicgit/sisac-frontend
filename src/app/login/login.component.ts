@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
       
               let tk = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME));
               const decodedToken = helper.decodeToken(tk.access_token);
+              sessionStorage.setItem(environment.TOKE_USER, decodedToken.user_name);
               //console.log(decodedToken);
       
             //   this.menuService.listarPorUsuario(decodedToken.user_name).subscribe(data => {

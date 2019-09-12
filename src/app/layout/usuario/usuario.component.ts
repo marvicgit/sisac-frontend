@@ -95,7 +95,6 @@ export class UsuarioComponent implements OnInit {
     }
     
   }
-
   buscarUsuarioLdap(){
     this.service.buscarUsuarioLdap(this.form.get('usulog').value).subscribe(data => {
       this.form.get('usucor').setValue(data.usucor)
