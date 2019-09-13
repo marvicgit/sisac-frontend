@@ -56,7 +56,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of rolMenus | paginate: { itemsPerPage: 7, currentPage: page }">
+                                            <tr *ngFor="let item of listaRolMenus  | paginate: { itemsPerPage: 7, currentPage: page }">
                                                 <td>{{ item.rolmencod }}</td>
                                                 <td>{{ item.menu == null ? null : item.menu.sistema.sisnom }}</td>
                                                 <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>

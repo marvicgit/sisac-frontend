@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Rol } from '../../models/rol';
 import { NgbModal, ModalDismissReasons, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { RolService } from './rol.service';
-import { Menu } from '../../models/menu';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-rol',
@@ -13,19 +11,17 @@ import Swal from 'sweetalert2'
   styleUrls: ['./rol.component.scss']
 })
 export class RolComponent implements OnInit {
-  
   form: FormGroup;
   roles: Rol[] = [];
-  total: Number = 0;
-  searchValue: string;
-  menus: Observable<Menu[]>;
-  page: number = 0;
+  listaRoles: Rol[] = [];
+  total = 0;
+  page = 0;
   closeResult: string;
 
-  constructor(private formBuilder: FormBuilder, 
-              private modalService: NgbModal, 
-              private config: NgbModalConfig, 
-              private service: RolService) { 
+  constructor(private formBuilder: FormBuilder,
+              private modalService: NgbModal,
+              private config: NgbModalConfig,
+              private service: RolService) {
                 this.config.backdrop = 'static';
                 this.config.keyboard = false;
               }
@@ -36,8 +32,9 @@ export class RolComponent implements OnInit {
   }
 
   listar() {
-    this.service.listar().subscribe((data: Rol[]) => {     
+    this.service.listar().subscribe((data: Rol[]) => {
       this.roles = data;
+      this.listaRoles = data;
       this.total = data.length;
     });
   }
@@ -53,19 +50,20 @@ export class RolComponent implements OnInit {
       usumod: new FormControl('')
     });
   }
-  
-
-
-  changeSistema() {
-    let idSistema: number = this.form.get('sistema.siscod').value;
-    //this.listarMenu(idSistema);
+  applyFilter(searchValue: string = null) {
+    this.listaRoles = this.roles;
+    if (searchValue) {
+      this.listaRoles = this.listaRoles.filter(x => (x.rolnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                               x.rolnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaRoles.length;
+    }
   }
 
   registrar() {
-    if(this.form.valid) {
-      if(this.form.get('rolcod').value == null){
+    if (this.form.valid) {
+      if (this.form.get('rolcod').value == null) {
         this.form.get('usureg').setValue('1');
-        this.service.registrar(this.form.value).subscribe(data =>{
+        this.service.registrar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -76,11 +74,9 @@ export class RolComponent implements OnInit {
           });
           this.listar();
         });
-        
-        
       } else {
-        this.form.get('usumod').setValue('1')
-        this.service.modificar(this.form.value).subscribe(data =>{
+        this.form.get('usumod').setValue('1');
+        this.service.modificar(this.form.value).subscribe(data => {
           console.log(data);
           this.modalService.dismissAll();
           Swal.fire({
@@ -92,16 +88,14 @@ export class RolComponent implements OnInit {
           });
           this.listar();
         });
-        
-        
       }
     }
   }
 
-  elimnar(data: Rol){
+  elimnar(data: Rol) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: "No podras revertirlo!",
+      text: 'No podras revertirlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -110,7 +104,7 @@ export class RolComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.rolcod).subscribe( data => {
+        this.service.eliminar(data.rolcod).subscribe(() => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',
@@ -119,11 +113,11 @@ export class RolComponent implements OnInit {
           this.listar();
         });
       }
-    })
-  } 
+    });
+  }
 
   open(content, data?: Rol) {
-    if(data != null) {
+    if (data != null) {
       this.form.get('rolcod').setValue(data.rolcod);
       this.form.get('rolnom').setValue(data.rolnom);
       this.form.get('roldes').setValue(data.roldes);
@@ -132,8 +126,6 @@ export class RolComponent implements OnInit {
   } else {
       this.iniciarForm();
   }
-    
-    //this.form.setValue(data);
     this.modalService.open(content).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

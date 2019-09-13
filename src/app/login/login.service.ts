@@ -4,24 +4,25 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario';
+import { UsuarioPermisos } from '../models/usuarioPermiso';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  url: string = `${environment.HOST_URL}/oauth/token`;
+  url = `${environment.HOST_URL}/oauth/token`;
   token: string;
   constructor(private http: HttpClient, private router: Router) { }
-  
-  login(usuario: string, contrasena: string) {
-    const body = `grant_type=password&username=${encodeURIComponent(usuario)}&password=${encodeURIComponent(contrasena)}`;  
+  login(usuario: Usuario) {
+    const body = `grant_type=password&username=${encodeURIComponent(usuario.usulog)}&password=${encodeURIComponent(usuario.usupas)}`;  
     return this.http.post(this.url, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8').set('Authorization', 'Basic ' + btoa(environment.TOKEN_AUTH_USERNAME + ':' + environment.TOKEN_AUTH_PASSWORD))
-    }); 
+    });
   }
 
   estaLogeado() {
-    let token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const token = sessionStorage.getItem(environment.TOKEN_NAME);
     return token != null;
   }
 
@@ -31,8 +32,12 @@ export class LoginService {
     });
   }
 
-  verificarTokenReset(token: string) {  
+  verificarTokenReset(token: string) {
     return this.http.get<number>(`${environment.HOST_URL}/login/restablecer/verificar/${token}`);
+  }
+
+  cambiarContraseña(data: Usuario) {
+    return this.http.post<number>(`${environment.HOST_URL}/login/cambiarClave`, data);
   }
 
   restablecer(token: string, clave: string) {
@@ -41,8 +46,14 @@ export class LoginService {
     });
   }
 
+  // listarPermisos(usuario: string, sistema: string) {
+  //   return this.http.get<UsuarioPermisos>(`${environment.HOST_URL}/login/restablecer/${token}`, clave, {
+  //     headers: new HttpHeaders().set('Content-Type', 'text/plain')
+  //   });
+  // }
+
   cerrarSesion() {
-    let access_token = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME)).access_token;
+    const access_token = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME)).access_token;
     this.http.get(`${environment.HOST_URL}/token/anular/${access_token}`).subscribe(() => {
       sessionStorage.clear();
       this.router.navigate(['/login']);

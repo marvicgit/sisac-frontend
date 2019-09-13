@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { LoginService } from '../../login/login.service';
 import { PasswordValidation } from '../../shared';
+import { Usuario } from 'src/app/models/usuario';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -28,15 +30,15 @@ export class CambiarContrasenaComponent implements OnInit {
 
   iniciarForm() {
     this.form = this.formBuilder.group({
-      password: [''],
-      confirmPassword: ['']}, {
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]}, {
         validator: PasswordValidation.MatchPassword
       });
   }
 
   ngOnInit() {
     this.iniciarForm();
-    this.verificarTokenReset();
+    //this.verificarTokenReset();
   }
 
 
@@ -59,10 +61,12 @@ export class CambiarContrasenaComponent implements OnInit {
   }
 
   onSubmit() {
-    let clave: string = this.form.value.confirmPassword;
-    this.loginService.restablecer(this.token, clave).subscribe(data => {
+    let usuario: Usuario = new Usuario();
+    usuario.usulog = sessionStorage.getItem(environment.TOKE_USER)
+    usuario.usupas = this.form.value.confirmPassword;
+    this.loginService.cambiarContraseña(usuario).subscribe(data => {
       if (data === 1) {
-        this.rpta = 1;
+        this.loginService.cerrarSesion();
       }
     }, (err => {
       this.rpta = 0;

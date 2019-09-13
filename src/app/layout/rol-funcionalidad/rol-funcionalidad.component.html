@@ -57,7 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of sistemaRolFunc | paginate: { itemsPerPage: 7, currentPage: page }">
+                                            <tr *ngFor="let item of listaSistemaRolFunc | paginate: { itemsPerPage: 7, currentPage: page }">
                                                 <td>{{ item.sisrolfuncod }}</td>
                                                 <td>{{ item.sistema == null ? null : item.sistema.sisnom }}</td>
                                                 <td>{{ item.rol == null ? null : item.rol.rolnom }}</td>

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Funcionalidad } from '../../models/funcionalidad';
 import { NgbModal, ModalDismissReasons, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FuncionalidadService } from './funcionalidad.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-funcionalidad',
@@ -11,16 +11,18 @@ import Swal from 'sweetalert2'
   styleUrls: ['./funcionalidad.component.scss']
 })
 export class FuncionalidadComponent implements OnInit {
-  
   form: FormGroup;
-  funcionalidades: Funcionalidad[];
-  total: number = 0;
-  searchValue: string;
-  page: number = 0;
+  funcionalidades: Funcionalidad[] = [];
+  listaFunc: Funcionalidad[] = [];
+  total = 0;
+  page = 0;
   closeResult: string;
   idSistema = 1;
 
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, config: NgbModalConfig, private service: FuncionalidadService) {
+  constructor(private formBuilder: FormBuilder,
+              private modalService: NgbModal,
+              config: NgbModalConfig,
+              private service: FuncionalidadService) {
     config.backdrop = 'static';
     config.keyboard = false;
    }
@@ -31,8 +33,9 @@ export class FuncionalidadComponent implements OnInit {
   }
 
   listar() {
-    this.service.listar().subscribe((data: Funcionalidad[]) => {     
+    this.service.listar().subscribe((data: Funcionalidad[]) => {
       this.funcionalidades = data;
+      this.listaFunc = data;
       this.total = data.length;
     });
   }
@@ -49,15 +52,20 @@ export class FuncionalidadComponent implements OnInit {
     });
   }
 
-  applyFilter(filterValue: string) {
-    //this.funcionalidades = this.service.getFuncionalidades(filterValue);
+  applyFilter(searchValue: string = null) {
+    this.listaFunc = this.funcionalidades;
+    if (searchValue) {
+      this.listaFunc = this.listaFunc.filter(x => (x.funnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                   x.funsig.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaFunc.length;
+    }
   }
 
   registrar() {
-    if(this.form.valid) {     
-      if(this.form.get('funcod').value == null){
+    if (this.form.valid) {
+      if (this.form.get('funcod').value == null) {
         this.form.get('usureg').setValue('1');
-        this.service.registrar(this.form.value).subscribe(data =>{
+        this.service.registrar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -68,10 +76,9 @@ export class FuncionalidadComponent implements OnInit {
           });
           this.listar();
         });
-        
       } else {
-        this.form.get('usumod').setValue('1')
-        this.service.modificar(this.form.value).subscribe(data =>{
+        this.form.get('usumod').setValue('1');
+        this.service.modificar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -82,16 +89,14 @@ export class FuncionalidadComponent implements OnInit {
           });
           this.listar();
         });
-        
-        
       }
     }
   }
 
-  elimnar(data: Funcionalidad){
+  elimnar(data: Funcionalidad) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: "No podras revertirlo!",
+      text: 'No podras revertirlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -100,7 +105,7 @@ export class FuncionalidadComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.funcod).subscribe( data => {
+        this.service.eliminar(data.funcod).subscribe(() => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',
@@ -109,11 +114,11 @@ export class FuncionalidadComponent implements OnInit {
           this.listar();
         });
       }
-    })
-  } 
+    });
+  }
 
   open(content, data?: Funcionalidad) {
-    if(data != null) {
+    if (data != null) {
       this.form.get('funcod').setValue(data.funcod);
       this.form.get('funnom').setValue(data.funnom);
       this.form.get('fundes').setValue(data.fundes);
@@ -138,6 +143,4 @@ export class FuncionalidadComponent implements OnInit {
         return  `with: ${reason}`;
     }
   }
-
-
 }

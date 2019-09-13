@@ -10,9 +10,8 @@ import { MenuService } from '../menu/menu.service';
 import { Funcionalidad } from '../../models/funcionalidad';
 import { FuncionalidadService } from '../funcionalidad/funcionalidad.service';
 
-import { RolMenuFun } from '../../models/rolmenfun';
 import { RolMenu } from '../../models/rolMenu';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { RolFuncionalidadService } from './rol-funcionalidad.service';
 import { RolFuncionalidadDTO } from '../../models/rolFuncionalidadDTO';
 import { RolMenService } from '../rol-men/rol-men.service';
@@ -27,26 +26,28 @@ import { SisRolFuncionalidadDTO } from 'src/app/models/sisRolFuncionalidadDTO';
 export class RolFuncionalidadComponent implements OnInit {
 
   form: FormGroup;
-  page: number = 0;
+  page = 0;
   sistemasRoles: SistemaRolDTO[] = [];
   filtroRoles: SistemaRolDTO[] = [];
-  total: number = 0;
+  total = 0;
   roles: Rol[];
   sistemas: Sistema[];
   menus: Menu[];
   filtroMenus: Menu[];
   funcionalidades: Funcionalidad[];
-  sistemaRolFunc: SisRolFuncionalidadDTO[];
+  sistemaRolFunc: SisRolFuncionalidadDTO[] = [];
+  listaSistemaRolFunc: SisRolFuncionalidadDTO[] = [];
   closeResult: string;
-  constructor(private formBuilder: FormBuilder, 
+  searchValue: string;
+  constructor(private formBuilder: FormBuilder,
               private modalService: NgbModal,
               private service: RolFuncionalidadService,
               private serviceRolMenu: RolMenService,
-              private config: NgbModalConfig, 
+              private config: NgbModalConfig,
               private serviceSistema: SistemaService,
               private serviceMenu: MenuService,
               private serviceFunc: FuncionalidadService,
-              private serviceRol: RolService) { 
+              private serviceRol: RolService) {
                 this.config.backdrop = 'static';
                 this.config.keyboard = false;
               }
@@ -60,40 +61,50 @@ export class RolFuncionalidadComponent implements OnInit {
   }
 
   llenarGrid() {
-    this.service.listar().subscribe( data => {    
+    this.service.listar().subscribe( data => {
       this.sistemaRolFunc = data;
+      this.listaSistemaRolFunc = data;
       this.total = data.length;
-    })
+    });
   }
 
   listaRolMenus() {
-    this.serviceRolMenu.listarSistemaRol().subscribe( data => {     
-      this.sistemasRoles = data;      
-    })
+    this.serviceRolMenu.listarSistemaRol().subscribe(data => {
+      this.sistemasRoles = data;
+    });
   }
 
   listarRol() {
-    this.serviceRol.listar().subscribe( data => {    
+    this.serviceRol.listar().subscribe(data => {
       this.roles = data;
-    })
+    });
   }
 
   listarSistema() {
-    this.serviceSistema.listar().subscribe( data => {    
+    this.serviceSistema.listar().subscribe(data => {
       this.sistemas = data;
-    })
+    });
   }
 
   listarMenu() {
-    this.serviceMenu.listar().subscribe( data => {    
+    this.serviceMenu.listar().subscribe(data => {
       this.menus = data;
-    })
+    });
   }
 
   listarFuncionalidades() {
-    this.serviceFunc.listar().subscribe( data => {    
+    this.serviceFunc.listar().subscribe(data => {
       this.funcionalidades = data;
-    })
+    });
+  }
+
+  applyFilter(searchValue: string = null) {
+    this.listaSistemaRolFunc = this.sistemaRolFunc;
+    if (searchValue) {
+      this.listaSistemaRolFunc = this.listaSistemaRolFunc.filter(x => (x.sistema.sisnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                               x.rol.rolnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaSistemaRolFunc.length;
+    }
   }
 
   iniciarForm() {
@@ -108,24 +119,20 @@ export class RolFuncionalidadComponent implements OnInit {
   }
 
   registrar() {
-    let lstFuncionalidad: Funcionalidad[] = [];
+    const lstFuncionalidad: Funcionalidad[] = [];
 
-    this.form.get('funcod').value.forEach(function(l) {
-      let fun: Funcionalidad = new Funcionalidad();
+    this.form.get('funcod').value.forEach(l => {
+      const fun: Funcionalidad = new Funcionalidad();
       fun.funcod = l;
       lstFuncionalidad.push(fun);
    });
     console.log(this.form.valid);
-    
-    if(this.form.valid) {
-      let datos: RolFuncionalidadDTO = new RolFuncionalidadDTO();
+    if (this.form.valid) {
+      const datos: RolFuncionalidadDTO = new RolFuncionalidadDTO();
       datos.siscod = this.form.get('siscod').value;
       datos.rolcod = this.form.get('rolcod').value;
       datos.lstFuncionalidad = lstFuncionalidad;
-      
-      this.service.registrar(datos).subscribe(data =>{
-        console.log(data);
-         
+      this.service.registrar(datos).subscribe(() => {
             this.modalService.dismissAll();
             Swal.fire({
               position: 'top-end',
@@ -140,12 +147,12 @@ export class RolFuncionalidadComponent implements OnInit {
   }
 
   changeSistema() {
-    let id: number = this.form.get('siscod').value
-    this.filtroRoles = this.sistemasRoles.filter(x => x.siscod === id);  
+    const id: number = this.form.get('siscod').value;
+    this.filtroRoles = this.sistemasRoles.filter(x => x.siscod === id);
   }
 
   open(content, data?: RolMenu) {
-    if(data != null) {
+    if (data != null) {
   } else {
       this.iniciarForm();
   }
@@ -166,10 +173,10 @@ export class RolFuncionalidadComponent implements OnInit {
     }
   }
 
-  elimnar(data: SisRolFuncionalidadDTO){
+  elimnar(data: SisRolFuncionalidadDTO) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: "No podras revertirlo!",
+      text: 'No podras revertirlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -178,7 +185,7 @@ export class RolFuncionalidadComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.sisrolfuncod).subscribe(data => {
+        this.service.eliminar(data.sisrolfuncod).subscribe(() => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',
@@ -187,6 +194,6 @@ export class RolFuncionalidadComponent implements OnInit {
           this.llenarGrid();
         });
       }
-    })
-  } 
+    });
+  }
 }

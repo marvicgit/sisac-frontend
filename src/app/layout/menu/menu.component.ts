@@ -5,7 +5,7 @@ import { NgbModal, ModalDismissReasons, NgbModalConfig } from '@ng-bootstrap/ng-
 import { MenuService } from './menu.service';
 import { Sistema } from '../../models/sistema';
 import { SistemaService } from '../sistema/sistema.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-menu',
@@ -17,13 +17,17 @@ export class MenuComponent implements OnInit {
   form: FormGroup;
   gridMenus: Menu[] = [];
   sistemas: Sistema[];
-  total: number = 0;
-  searchValue: string;
-  menus: Menu[];
-  page: number = 0;
+  total = 0;
+  menus: Menu[] = [];
+  listaMenus: Menu[] = [];
+  page = 0;
   closeResult: string;
 
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, config: NgbModalConfig, private service: MenuService, private serviceSistema: SistemaService) {
+  constructor(private formBuilder: FormBuilder,
+              private modalService: NgbModal,
+              config: NgbModalConfig,
+              private service: MenuService,
+              private serviceSistema: SistemaService) {
     config.backdrop = 'static';
     config.keyboard = false;
    }
@@ -37,11 +41,11 @@ export class MenuComponent implements OnInit {
   iniciarForm() {
     this.form = this.formBuilder.group({
         mencod: new FormControl(null),
-        mennom: new FormControl('', Validators.required),
-        menico: new FormControl(''),
-        mensig: new FormControl('', Validators.required),
-        menrut: new FormControl('', Validators.required),
-        menord: new FormControl('', Validators.required),
+        mennom: new FormControl(null, [Validators.required]),
+        menico: new FormControl(null),
+        mensig: new FormControl(null, [Validators.required]),
+        menrut: new FormControl(null),
+        menord: new FormControl(null, [Validators.required]),
         estreg: new FormControl('1'),
         sistema: new FormGroup({
             siscod: new FormControl('', Validators.required),
@@ -59,27 +63,37 @@ export class MenuComponent implements OnInit {
   listarSistema() {
     this.serviceSistema.listar().subscribe(data => {
       this.sistemas = data;
-    })
+    });
+  }
+
+  applyFilter(searchValue: string = null) {
+    this.listaMenus = this.gridMenus;
+    if (searchValue) {
+      this.listaMenus = this.listaMenus.filter(x => (x.sistema.sisnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                               x.mennom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaMenus.length;
+    }
   }
 
   gridMenu() {
-    this.service.listar().subscribe( data => {    
+    this.service.listar().subscribe( data => {
       this.gridMenus = data;
+      this.listaMenus = data;
       this.total = data.length;
-    })
+    });
   }
 
   registrar() {
-    if(this.form.valid) {
-      let data: Menu = this.form.value;
-      if(data.padre.mencod == null) {
+    if (this.form.valid) {
+      const data: Menu = this.form.value;
+      if (data.padre.mencod == null) {
         data.padre = null;
       }
-      if(data.mencod == null){
-        data.usureg = '1'
-        data.menest = '1'
+      if (data.mencod == null) {
+        data.usureg = '1';
+        data.menest = '1';
         console.log(data);
-        this.service.registrar(data).subscribe(data =>{
+        this.service.registrar(data).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -91,8 +105,8 @@ export class MenuComponent implements OnInit {
           this.gridMenu();
         });
       } else {
-        data.usumod = '1'
-        this.service.modificar(data).subscribe(data =>{
+        data.usumod = '1';
+        this.service.modificar(data).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -108,16 +122,16 @@ export class MenuComponent implements OnInit {
   }
 
   changeSistema() {
-    let id: number = this.form.get('sistema.siscod').value
-    this.menus = this.gridMenus.filter(function(l) {
+    const id: number = this.form.get('sistema.siscod').value;
+    this.menus = this.gridMenus.filter(l => {
       return l.sistema.siscod === id;
     });
   }
 
-  elimnar(data: Menu){
+  elimnar(data: Menu) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: "No podras revertirlo!",
+      text: 'No podras revertirlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -126,7 +140,7 @@ export class MenuComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.mencod).subscribe( data => {
+        this.service.eliminar(data.mencod).subscribe(() => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',
@@ -135,12 +149,11 @@ export class MenuComponent implements OnInit {
           this.gridMenu();
         });
       }
-    })
-  } 
+    });
+  }
 
   open(content, data?: Menu) {
-    if(data != null) {
-        
+    if (data != null) {
         this.form.get('mencod').setValue(data.mencod);
         this.form.get('mennom').setValue(data.mennom);
         this.form.get('menico').setValue(data.menico);
@@ -151,7 +164,7 @@ export class MenuComponent implements OnInit {
         this.form.get('usureg').setValue(data.usureg);
         this.form.get('sistema.siscod').setValue(data.sistema.siscod);
         this.changeSistema();
-        if(data.padre != null) {
+        if (data.padre != null) {
           this.form.get('padre.mencod').setValue(data.padre.mencod);
         }
     } else {

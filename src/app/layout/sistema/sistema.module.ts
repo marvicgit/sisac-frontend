@@ -9,7 +9,7 @@ import { SistemaRoutingModule } from './sistema-routing.module';
 import { SistemaComponent } from './sistema.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
-
+import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    NgxUpperCaseDirectiveModule,
     NgbModule,
     HttpClientModule,
     SharedPipesModule

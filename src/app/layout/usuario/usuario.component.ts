@@ -27,19 +27,19 @@ import { UsuarioSistemaRolDTO } from 'src/app/models/usuarioSistemaRolDTO';
   styleUrls: ['./usuario.component.scss']
 })
 export class UsuarioComponent implements OnInit {
-  
   form: FormGroup;
   selectedTabId = 'acceso';
-  page: number = 0;
-  total: number = 0;
+  page = 0;
+  total = 0;
   closeResult: string;
-  usuarios: Usuario[];
+  usuarios: Usuario[] = [];
+  listaUsuarios: Usuario[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private modalService: NgbModal, 
+              private modalService: NgbModal,
               config: NgbModalConfig,
-              private service: UsuarioService, 
-              private router: Router) { 
+              private service: UsuarioService,
+              private router: Router) {
                 config.backdrop = 'static';
                 config.keyboard = false;
               }
@@ -81,19 +81,29 @@ export class UsuarioComponent implements OnInit {
   // }
 
   listar() {
-    this.service.listar().subscribe((data: Usuario[]) => {     
+    this.service.listar().subscribe((data: Usuario[]) => {
       this.usuarios = data;
+      this.listaUsuarios = data;
       this.total = data.length;
     });
   }
 
+  applyFilter(searchValue: string = null) {
+    this.listaUsuarios = this.usuarios;
+    if (searchValue) {
+      this.listaUsuarios = this.listaUsuarios.filter(x => (x.usunom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                   x.usuapepat.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaUsuarios.length;
+    }
+  }
+
+
   openUsuario(data?: Usuario) {
-    if(data != null) {
+    if (data != null) {
         //this.form.setValue(data);
     } else {
       this.router.navigate(['/usuario/nuevo']);
     }
-    
   }
   buscarUsuarioLdap(){
     this.service.buscarUsuarioLdap(this.form.get('usulog').value).subscribe(data => {
@@ -104,7 +114,7 @@ export class UsuarioComponent implements OnInit {
 
   open(content, data?: Usuario) {
     this.selectedTabId = 'acceso';
-    if(data != null) {      
+    if (data != null) {
       this.form.get('usucod').setValue(data.usucod);
       this.form.get('usutipdoc').setValue(data.usutipdoc);
       this.form.get('usudni').setValue(data.usudni);
@@ -119,12 +129,10 @@ export class UsuarioComponent implements OnInit {
       this.form.get('usulog').setValue(data.usulog);
       this.form.get('usupas').setValue(data.usupas);
       this.form.get('usucor').setValue(data.usucor);
-      this.form.get('usuanexo').setValue(data.usuanexo);      
-      
+      this.form.get('usuanexo').setValue(data.usuanexo);
     } else {
        this.iniciarForm();
     }
-    
     this.modalService.open(content).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -132,7 +140,6 @@ export class UsuarioComponent implements OnInit {
     });
 
   }
-  
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
         return 'by pressing ESC';
@@ -141,11 +148,10 @@ export class UsuarioComponent implements OnInit {
     } else {
         return  `with: ${reason}`;
     }
-  } 
+  }
 
   registrar() {
     console.log(this.form.valid);
-    
     if (this.form.valid) {
       if (this.form.get('usucod').value == null) {
         this.form.get('usureg').setValue('1');
@@ -160,8 +166,7 @@ export class UsuarioComponent implements OnInit {
           });
           this.listar();
         });
-      }
-      else {
+      } else {
           this.form.get('usumod').setValue('1')
           this.service.modificar(this.form.value).subscribe(data =>{
             console.log(data);
@@ -178,5 +183,4 @@ export class UsuarioComponent implements OnInit {
       }
     }
   }
-
 }

@@ -3,21 +3,27 @@
         <div class="col-md-4">
             <img src="assets/images/logo-tren.png" width="150px" class="rounded" />
             <h1>Sistema de Seguidad y Acceso</h1>
-            <form role="form">
+            <form [formGroup]="form" (submit)="onLoggedin()" novalidate>
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="usuario" name="usuario" class="form-control input-underline input-lg" id="" placeholder="{{ 'Email' | translate }}">
+                        <input type="text" [ngClass]="{'is-valid': form.get('usulog').valid, 'is-invalid': form.get('usulog').invalid }" formControlName="usulog" class="form-control input-underline input-lg" placeholder="{{ 'Email' | translate }}">
+                        <div class="invalid-feedback texto">
+                            Ingrese el usuario.
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <input type="password" [(ngModel)]="password" name="password" class="form-control input-underline input-lg" id="" placeholder="{{ 'Password' | translate }}">
+                        <input type="password" [ngClass]="{'is-valid': form.get('usupas').valid, 'is-invalid': form.get('usupas').invalid }" formControlName="usupas" class="form-control input-underline input-lg" placeholder="{{ 'Password' | translate }}">
+                        <div class="invalid-feedback texto">
+                            Ingrese el contraseña.
+                        </div>
                     </div>
                     <div class="form-group">
                         <a class="texto" routerLink="/olvide-contrasena">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
-                <a class="btn rounded-btn" (click)="onLoggedin()">{{ 'Log in' | translate }}</a> &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a>
+                <button class="btn btn btn-link rounded-btn" type="submit">Ingresar</button> &nbsp;
+                <!-- <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a> -->
             </form>
 
         </div>

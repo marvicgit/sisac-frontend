@@ -3,7 +3,7 @@ import { Sistema } from '../../models/sistema';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SistemaService } from './sistema.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sistema',
@@ -12,31 +12,27 @@ import Swal from 'sweetalert2'
 })
 export class SistemaComponent implements OnInit {
   form: FormGroup;
-  mantenimientoSistema: Sistema
-  sistemas: Sistema[];
-  page: number = 0;
-  total: number = 0;
-  searchValue: string;
+  sistemas: Sistema[] = [];
+  listaSistemas: Sistema[] = [];
+  page = 0;
+  total = 0;
   closeResult: string;
-  seconds = true;
-  activoInactivo: string[] = [ '1','0' ];
+  activoInactivo: string[] = [ '1', '0'];
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, config: NgbModalConfig, private service: SistemaService) {
     config.backdrop = 'static';
     config.keyboard = false;
    }
-  
   ngOnInit() {
     this.iniciarForm();
     this.listar();
-    
   }
 
   iniciarForm() {
     this.form = this.formBuilder.group({
         siscod: new FormControl(null),
-        sisnom: new FormControl('', Validators.required),
-        sisdes: new FormControl('', Validators.required),
-        sissig: new FormControl('', Validators.required),
+        sisnom: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+        sisdes: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        sissig: new FormControl('', [Validators.required, Validators.maxLength(15)]),
         sisest: '1',
         estreg: new FormControl('1'),
         usureg: '',
@@ -47,19 +43,29 @@ export class SistemaComponent implements OnInit {
   }
 
   listar() {
-    this.service.listar().subscribe((data: Sistema[]) => {     
+    this.service.listar().subscribe((data: Sistema[]) => {
       this.sistemas = data;
+      this.listaSistemas = data;
       this.total = data.length;
     });
   }
 
+  applyFilter(searchValue: string = null) {
+    this.listaSistemas = this.sistemas;
+    if (searchValue) {
+      this.listaSistemas = this.listaSistemas.filter(x => (x.sisnom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) ||
+                                   x.sissig.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
+      this.total = this.listaSistemas.length;
+    }
+  }
+
 
   registrar() {
-    if(this.form.valid) {
-      if(this.form.get('siscod').value == null){
+    if (this.form.valid) {
+      if (this.form.get('siscod').value == null) {
         this.form.get('fecreg').setValue(new Date());
         this.form.get('usureg').setValue('1');
-        this.service.registrar(this.form.value).subscribe(data =>{
+        this.service.registrar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -70,13 +76,10 @@ export class SistemaComponent implements OnInit {
           });
           this.listar();
         });
-        
-        
       } else {
-        this.form.get('fecmod').setValue(new Date())
-        this.form.get('usumod').setValue('1')
-        this.service.modificar(this.form.value).subscribe(data =>{
-          console.log(data);
+        this.form.get('fecmod').setValue(new Date());
+        this.form.get('usumod').setValue('1');
+        this.service.modificar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -87,16 +90,14 @@ export class SistemaComponent implements OnInit {
           });
           this.listar();
         });
-        
-        
       }
     }
   }
 
-  elimnar(data: Sistema){
+  elimnar(data: Sistema) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: "No podras revertirlo!",
+      text: 'No podras revertirlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -105,7 +106,7 @@ export class SistemaComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.service.eliminar(data.siscod).subscribe( data => {
+        this.service.eliminar(data.siscod).subscribe(() => {
           Swal.fire(
             'Eliminado!',
             'El registro fue eliminado correctamente.',
@@ -114,18 +115,15 @@ export class SistemaComponent implements OnInit {
           this.listar();
         });
       }
-    })
-  } 
-
-  
+    });
+  }
 
     open(content, sistema?: Sistema) {
-        if(sistema != null) {
+        if (sistema != null) {
             this.form.setValue(sistema);
         } else {
             this.iniciarForm();
         }
-        
         this.modalService.open(content).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
@@ -142,7 +140,7 @@ export class SistemaComponent implements OnInit {
         } else {
             return  `with: ${reason}`;
         }
-    }    
+    }
 }
 
 

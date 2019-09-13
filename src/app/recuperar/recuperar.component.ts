@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login/login.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from '../shared';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Usuario } from '../models/usuario';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recuperar',
@@ -29,26 +31,26 @@ export class RecuperarComponent implements OnInit {
 
   iniciarForm() {
     this.form = this.formBuilder.group({
-      password: [''],
-      confirmPassword: ['']}, {
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]}, {
         validator: PasswordValidation.MatchPassword
       });
   }
 
   verificarTokenReset() {
-    // this.route.params.subscribe((params: Params) => {
-    //   this.token = params['token'];
-    //   this.service.verificarTokenReset(this.token).subscribe(data => {
-    //     if (data === 1) {
-    //       this.tokenValido = true;
-    //     } else {
-    //       this.tokenValido = false;
-    //       setTimeout(() => {
-    //         this.router.navigate(['login']);
-    //       }, 2000);
-    //     }
-    //   });
-    // });
+    this.route.params.subscribe((params: Params) => {
+      this.token = params['token'];
+      this.service.verificarTokenReset(this.token).subscribe(data => {
+        if (data === 1) {
+          this.tokenValido = true;
+        } else {
+          this.tokenValido = false;
+          setTimeout(() => {
+            this.router.navigate(['login']);
+          }, 2000);
+        }
+      });
+    });
   }
 
   onSubmit() {

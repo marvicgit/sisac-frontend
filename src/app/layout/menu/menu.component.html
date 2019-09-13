@@ -29,7 +29,7 @@
                                     <form>
                                         <div class="form-row align-items-center">
                                             <div class="col-auto">
-                                                <input type="text" class="form-control mb-2" [(ngModel)]="searchValue" name="searchValue" placeholder="Buscar">
+                                                <input type="text" upperCase class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
                                             </div>
                                             <div class="col-auto">
                                                 <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
@@ -56,7 +56,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of gridMenus | filterNivel2 : 'sistema' : 'sisnom' : 'mennom' : searchValue  | paginate: { itemsPerPage: 7, currentPage: page }">
+                                            <tr *ngFor="let item of listaMenus  | paginate: { itemsPerPage: 7, currentPage: page }">
                                                 <td>{{ item.mencod }}</td>
                                                 <td>{{ item.sistema.sisnom }}</td>
                                                 <td>{{ item.mennom }}</td>
@@ -93,7 +93,7 @@
                         <div class="form-group col-sm-9" for="nombre">
                             <label>Nombre</label>
                             <div class="form-line">
-                                <input type="text" class="form-control" [ngClass]="{'is-valid': form.get('mennom').valid, 'is-invalid': form.get('mennom').invalid }" formControlName="mennom" placeholder="Nombre" name="mennom">
+                                <input type="text" maxlength="50" class="form-control" [ngClass]="{'is-valid': form.get('mennom').valid, 'is-invalid': form.get('mennom').invalid }" formControlName="mennom" placeholder="Nombre" name="mennom">
                                 <div class="invalid-feedback">
                                     Ingrese el nombre.
                                 </div>
@@ -102,21 +102,21 @@
                         <div class="form-group col-sm-3">
                             <label>Icono</label>
                             <div class="form-line">
-                                <input type="text" class="form-control" formControlName="menico" placeholder="Icon" name="menico">
+                                <input type="text" maxlength="20" class="form-control" formControlName="menico" placeholder="Icon" name="menico">
                             </div>
                         </div>
                     </div>
                     <label>Ruta</label>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="text" class="form-control" formControlName="menrut" placeholder="Ruta" name="menrut">
+                            <input type="text" maxlength="50" class="form-control" formControlName="menrut" placeholder="Ruta" name="menrut">
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-8">
                             <label>Sigla</label>
                             <div class="form-line">
-                                <input type="text" class="form-control" [ngClass]="{'is-valid': form.get('mensig').valid, 'is-invalid': form.get('mensig').invalid }" formControlName="mensig" placeholder="Sigla" name="mensig">
+                                <input type="text" upperCase maxlength="20" class="form-control" [ngClass]="{'is-valid': form.get('mensig').valid, 'is-invalid': form.get('mensig').invalid }" formControlName="mensig" placeholder="Sigla" name="mensig">
                                 <div class="invalid-feedback">
                                     Ingrese la sigla.
                                 </div>
@@ -125,7 +125,7 @@
                         <div class="form-group col-sm-4">
                             <label>Orden</label>
                             <div class="form-line">
-                                <input type="text" class="form-control" [ngClass]="{'is-valid': form.get('menord').valid, 'is-invalid': form.get('menord').invalid }" formControlName="menord" placeholder="Orden" name="menord">
+                                <input type="text" maxlength="3" class="form-control" [ngClass]="{'is-valid': form.get('menord').valid, 'is-invalid': form.get('menord').invalid }" formControlName="menord" placeholder="Orden" name="menord">
                                 <div class="invalid-feedback">
                                     Ingrese la número de orden.
                                 </div>
@@ -135,7 +135,7 @@
                     <label>Sistema</label>
                     <div class="form-group">
                         <div class="form-line" formGroupName="sistema">
-                            <ng-select [items]="sistemas" bindLabel="sisnom" (change)="changeSistema()" bindValue="siscod" formControlName="siscod">
+                            <ng-select [items]="sistemas" bindLabel="sisnom" (change)="changeSistema()" bindValue="siscod" formControlName="siscod" maxlength="50">
                             </ng-select>
                             <div class="invalid-feedback">Elija el sistema</div>
                         </div>

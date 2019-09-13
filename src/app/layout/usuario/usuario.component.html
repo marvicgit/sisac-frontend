@@ -60,7 +60,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of usuarios | paginate: { itemsPerPage: 7, currentPage: page }" (dblclick)="open(content, item)" class="cursor">
+                                            <tr *ngFor="let item of listaUsuarios | paginate: { itemsPerPage: 7, currentPage: page }" (dblclick)="open(content, item)" class="cursor">
                                                 <td>{{ item.usucod }}</td>
                                                 <td>{{ item.usunom + ' ' + item.usuapepat + ' ' + item.usuapemat }}</td>
                                                 <td>{{ item.usulog }}</td>

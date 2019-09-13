@@ -53,4 +53,10 @@ export class HeaderComponent implements OnInit {
     changeLang(language: string) {
         this.translate.use(language);
     }
+
+    irCambiarClave(){
+        let tk = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME));
+        let token = tk != null ? tk.access_token : '';
+        this.router.navigate(['/cambiar-contrasena/' + token]);    
+    }
 }
