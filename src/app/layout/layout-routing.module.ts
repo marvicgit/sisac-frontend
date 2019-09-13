@@ -19,7 +19,7 @@ const routes: Routes = [
         { path: 'reporte', loadChildren: () => import('./reporte/reporte.module').then(m => m.ReporteModule), canActivate: [AuthGuard]  },
         { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), canActivate: [AuthGuard]  },
         { path: 'sis-usuario', loadChildren: () => import('./sistema-usuario/sistema-usuario.module').then(m => m.SistemaUsuarioModule), canActivate: [AuthGuard]  },
-        { path: 'cambiar-contrasena', loadChildren: () => import('./cambiar-contrasena/cambiar-contrasena.module').then(m => m.CambiarContrasenaModule) },
+        { path: 'cambiar-contrasena/:token', loadChildren: () => import('./cambiar-contrasena/cambiar-contrasena.module').then(m => m.CambiarContrasenaModule) },
         // { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
         // { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
         // { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
