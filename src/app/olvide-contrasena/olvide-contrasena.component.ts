@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./olvide-contrasena.component.scss']
 })
 export class OlvideContrasenaComponent implements OnInit {
-  email: string;
+  usuario: string;
   mensaje: string;
   error: string;
   porcentaje: number = 0;
@@ -20,7 +20,7 @@ export class OlvideContrasenaComponent implements OnInit {
 
   enviar() {
     this.porcentaje = 99;
-    this.service.enviarCorreo(this.email).subscribe(data => {
+    this.service.enviarCorreo(this.usuario).subscribe(data => {
       if (data === 1) {
         this.mensaje = "Se enviaron las indicaciones al correo."
         this.error = null

@@ -36,19 +36,19 @@ export class RecuperarComponent implements OnInit {
   }
 
   verificarTokenReset() {
-    this.route.params.subscribe((params: Params) => {
-      this.token = params['token'];
-      this.service.verificarTokenReset(this.token).subscribe(data => {
-        if (data === 1) {
-          this.tokenValido = true;
-        } else {
-          this.tokenValido = false;
-          setTimeout(() => {
-            this.router.navigate(['login']);
-          }, 2000);
-        }
-      });
-    });
+    // this.route.params.subscribe((params: Params) => {
+    //   this.token = params['token'];
+    //   this.service.verificarTokenReset(this.token).subscribe(data => {
+    //     if (data === 1) {
+    //       this.tokenValido = true;
+    //     } else {
+    //       this.tokenValido = false;
+    //       setTimeout(() => {
+    //         this.router.navigate(['login']);
+    //       }, 2000);
+    //     }
+    //   });
+    // });
   }
 
   onSubmit() {

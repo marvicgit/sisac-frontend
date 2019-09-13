@@ -1,20 +1,26 @@
-<div *ngIf="!tokenValido">
+<div *ngIf="!tokenValido"> 
     La petición no es válida o ha expirado :(</div>
+<div class="login-page" [@routerTransition] *ngIf="tokenValido">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img src="assets/images/logo-tren.png" width="150px" class="rounded" />
+            <h1>Nueva Contraseña</h1>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input class="form-controlinput-underline input-lg" type="password" name="password" placeholder="Nueva contraseña" formControlName="password">
+                    </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="tokenValido">
-    <div class="example-container">
-        <div>
-            <input type="password" name="password" placeholder="Nueva contraseña" formControlName="password">
+                    <div class="form-group">
+                        <input class="form-controlinput-underline input-lg" type="password" placeholder="Repetir contraseña" formControlName="confirmPassword">
+                    </div>
+                </div>
+                <a class="btn rounded-btn" (click)="onLoggedin()">Cambiar contraseña</a> &nbsp;
+            </form>
+            <a class="texto" routerLink="/login">Ir a Login</a>
+            <div *ngIf="form.controls.confirmPassword.errors?.MatchPassword">Constraseñas no coinciden</div>
+            <div *ngIf="mensaje">{{mensaje}}</div>
+            <div *ngIf="error">{{error}}</div>
         </div>
-
-        <div>
-            <input type="password" placeholder="Repetir contraseña" formControlName="confirmPassword">
-        </div>
-
-        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Cambiar contraseña</button>
-        <button class="btn btn-primary" type="button" routerLink="/login" *ngIf="rpta === 1">Ir a Login</button>
-        <div *ngIf="form.controls.confirmPassword.errors?.MatchPassword">Constraseñas no coinciden</div>
-        <div *ngIf="mensaje">{{mensaje}}</div>
-        <div *ngIf="error">{{error}}</div>
     </div>
-</form>
+</div>
