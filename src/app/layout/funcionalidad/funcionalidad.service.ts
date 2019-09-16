@@ -10,9 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FuncionalidadService {
 
-  url: string = `${environment.HOST_URL}/funcionalidades`;  
+  url: string = `${environment.HOST_URL}/funcionalidades`;
   constructor(private http: HttpClient) { }
-  
   listar() {
     return this.http.get<Funcionalidad[]>(this.url);
   }

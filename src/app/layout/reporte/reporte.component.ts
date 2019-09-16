@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Sistema } from 'src/app/models/sistema';
-import { Reporte } from '../../models/reporte';
-import { ReporteService } from './reporte.service';
 import { SistemaService } from '../sistema/sistema.service';
 import { RolService } from '../rol/rol.service';
 import { Rol } from '../../models/rol';
 import { Funcionalidad } from 'src/app/models/funcionalidad';
-import { FuncionalidadService } from '../funcionalidad/funcionalidad.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { UsuarioService } from '../usuario/usuario.service';
+import { Usuario } from '../../models/usuario';
+import { ReporteDTO } from '../../models/reporteDTO';
 
 @Component({
   selector: 'app-reporte',
@@ -17,26 +16,52 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 })
 export class ReporteComponent implements OnInit {
   form: FormGroup;
-  reporte: Observable<Reporte[]>;
-  sistemas: Observable<Sistema[]>;
-  roles: Observable<Rol[]>;
-  funcionalidades: Observable<Funcionalidad[]>;
-  page: number = 0;
+  reporte: ReporteDTO[] = [];
+  sistemas: Sistema[] = [];
+  roles: Rol[] = [];
+  funcionalidades: Funcionalidad[] = [];
+  usuarios: Usuario[] = [];
+  page = 0;
+  total = 0;
   closeResult: string;
   seconds = true;
-  activoInactivo: string[] = [ '1','0' ];
-  constructor(private formBuilder: FormBuilder, 
-              private service: ReporteService,
+  activoInactivo: string[] = [ '1', '0' ];
+  constructor(private formBuilder: FormBuilder,
               private serviceSistema: SistemaService,
               private serviceRol: RolService,
-              private serviceFunc: FuncionalidadService,) { }
+              private serviceUsuario: UsuarioService) { }
 
   ngOnInit() {
     this.iniciarForm();
-    this.reporte = this.service.getObtenerReporte();
-    this.sistemas = this.serviceSistema.getSistemas();
-    this.roles = this.serviceRol.getRoles();
-    this.funcionalidades = this.serviceFunc.getFuncionalidades();
+    this.listar();
+    this.listarSistemas();
+    this.listarRoles();
+    this.listarUsuarios();
+  }
+
+  listar() {
+    this.serviceUsuario.ObtenerUsuarioDetalle().subscribe((data: ReporteDTO[]) => {
+      this.reporte = data;
+      this.total = data.length;
+    });
+  }
+
+  listarSistemas() {
+    this.serviceSistema.listar().subscribe((data: Sistema[]) => {
+      this.sistemas = data;
+    });
+  }
+
+  listarRoles() {
+    this.serviceRol.listar().subscribe((data: Rol[]) => {
+      this.roles = data;
+    });
+  }
+
+  listarUsuarios() {
+    this.serviceUsuario.listar().subscribe((data: Usuario[]) => {
+      this.usuarios = data;
+    });
   }
 
   iniciarForm() {

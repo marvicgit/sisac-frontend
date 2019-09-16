@@ -1,4 +1,3 @@
-import { Sistema } from './sistema';
 export class Rol {
     public rolcod: number = 0;
     public estreg: string = '';
