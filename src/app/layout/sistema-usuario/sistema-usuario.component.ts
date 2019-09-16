@@ -111,10 +111,8 @@ export class SistemaUsuarioComponent implements OnInit {
       data.siscod = this.form.get('siscod').value;
       data.usureg = "1";
       console.log(data);
-      
-         this.service.registrar(data).subscribe(data =>{
-           console.log(data);
-           
+
+      this.service.registrar(data).subscribe(data =>{
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -163,6 +161,12 @@ export class SistemaUsuarioComponent implements OnInit {
     }
   }
 
+  applyFilter(searchValue: string = null) {
+
+  }
+
+  elimnar(data: UsuarioSistemaRolDTO) {
+  }
   // elimnar(data: Sistema){
   //   Swal.fire({
   //     title: '¿Estas seguro de eliminar?',

@@ -150,6 +150,9 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
+  elimnar(data: Usuario) {
+  }
+
   registrar() {
     console.log(this.form.valid);
     if (this.form.valid) {

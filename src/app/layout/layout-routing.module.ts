@@ -10,10 +10,11 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
         { path: '', redirectTo: 'sistema', pathMatch: 'prefix' },
+        { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), canActivate: [AuthGuard] },
         { path: 'sistema', loadChildren: () => import('./sistema/sistema.module').then(m => m.SistemaModule), canActivate: [AuthGuard] },
         { path: 'menu', loadChildren: () => import('./menu/menu.module').then(m => m.MenuModule), canActivate: [AuthGuard] },
         { path: 'rol', loadChildren: () => import('./rol/rol.module').then(m => m.RolModule), canActivate: [AuthGuard]  },
-        { path: 'funcionalidad', loadChildren: () => import('./funcionalidad/funcionalidad.module').then(m => m.FuncionalidadModule), canActivate: [AuthGuard]  },     
+        { path: 'funcionalidad', loadChildren: () => import('./funcionalidad/funcionalidad.module').then(m => m.FuncionalidadModule), canActivate: [AuthGuard]  },
         { path: 'rol-men', loadChildren: () => import('./rol-men/rol-men.module').then(m => m.RolMenModule), canActivate: [AuthGuard]  },
         { path: 'rol-funcionalidad', loadChildren: () => import('./rol-funcionalidad/rol-funcionalidad.module').then(m => m.RolFuncionalidadModule), canActivate: [AuthGuard]  },
         { path: 'reporte', loadChildren: () => import('./reporte/reporte.module').then(m => m.ReporteModule), canActivate: [AuthGuard]  },

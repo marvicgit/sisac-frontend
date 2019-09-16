@@ -6,6 +6,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { Permiso } from '../models/permiso';
+import { SistemaUsuario } from '../models/sistemaUsuario';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +19,7 @@ export class LoginComponent implements OnInit {
     usuario: string;
     password: string;
     form: FormGroup;
+    permisos: Permiso[] = [];
     constructor(private formBuilder: FormBuilder,
                 public router: Router,
                 private service: LoginService
@@ -43,16 +46,17 @@ export class LoginComponent implements OnInit {
               const tk = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME));
               const decodedToken = helper.decodeToken(tk.access_token);
               sessionStorage.setItem(environment.TOKE_USER, decodedToken.user_name);
-              //console.log(decodedToken);
-      
-            //   this.menuService.listarPorUsuario(decodedToken.user_name).subscribe(data => {
-            //     this.menuService.menuCambio.next(data);
-            //   });
-              this.router.navigate(['/sistema']);
+              const sisusu: SistemaUsuario = new SistemaUsuario();
+              sisusu.sissig = decodedToken.client_id;
+              sisusu.usulog = decodedToken.user_name;
+              this.service.listarPermisos(sisusu).subscribe(permiso => {
+                this.service.permisosCambio.next(permiso);
+              });
+              this.router.navigate(['/home']);
             }
           }, err => {
             console.log(err);
-              Swal.fire({
+            Swal.fire({
                 type: 'error',
                 title: 'Error al autenticar',
                 text: err.error.error
