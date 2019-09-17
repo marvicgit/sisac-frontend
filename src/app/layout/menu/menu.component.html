@@ -29,7 +29,7 @@
                                     <form>
                                         <div class="form-row align-items-center">
                                             <div class="col-auto">
-                                                <input type="text" upperCase class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                                                <input type="text" upperCase maxlength="20" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
                                             </div>
                                             <div class="col-auto">
                                                 <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
@@ -56,7 +56,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of listaMenus  | paginate: { itemsPerPage: 7, currentPage: page }">
+                                            <tr *ngFor="let item of listaMenus | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                                                 <td>{{ item.mencod }}</td>
                                                 <td>{{ item.sistema.sisnom }}</td>
                                                 <td>{{ item.mennom }}</td>
@@ -70,7 +70,7 @@
                                         </tbody>
                                     </table>
                                     <div>
-                                        <ngb-pagination [collectionSize]="total" [(page)]="page" [maxSize]="7" [rotate]="true" [boundaryLinks]="true" aria-label="Default pagination"></ngb-pagination>
+                                        <ngb-pagination [collectionSize]="total" [(page)]="page" [pageSize]="pageSize" [rotate]="true" [boundaryLinks]="true" aria-label="Default pagination"></ngb-pagination>
                                         <!-- <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls> -->
                                     </div>
                                 </div>

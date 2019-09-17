@@ -35,7 +35,9 @@ export class LoginComponent implements OnInit {
         usupas: new FormControl(null, Validators.required),
         });
     }
-
+    // onLoggedin() {
+    //   this.router.navigate(['/home']);
+    // }
     onLoggedin() {
       if (this.form.valid) {
         this.service.login(this.form.value).subscribe(data => {

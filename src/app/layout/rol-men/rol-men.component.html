@@ -30,7 +30,7 @@
                                     <form>
                                         <div class="form-row align-items-center">
                                             <div class="col-auto">
-                                                <input type="text" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                                                <input type="text" maxlength="20" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
                                             </div>
                                             <div class="col-auto">
                                                 <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
@@ -86,7 +86,7 @@
                       </button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="form" (submit)="registrar()" novalidate>
+                <form [formGroup]="form" (submit)="registrar()">
                     <label>Rol</label>
                     <div class="form-group" for="nombre">
                         <div class="form-line">

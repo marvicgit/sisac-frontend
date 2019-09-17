@@ -32,7 +32,7 @@
                                         <div class="form-row align-items-center">
                                             <div class="col-auto has-error">
                                                 <label class="sr-only" for="inlineFormInput">Name</label>
-                                                <input type="text" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" id="inlineFormInput" placeholder="Buscar">
+                                                <input type="text" maxlength="20" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" id="inlineFormInput" placeholder="Buscar">
                                             </div>
                                             <div class="col-auto">
                                                 <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label>Usuario</label>
                                 <div class="input-group mb-3">
-                                    <input class="form-control" formControlName="usulog" placeholder="Usuario" name="usulog" type="text">
+                                    <input class="form-control" maxlength="50" upperCase formControlName="usulog" placeholder="Usuario" name="usulog" type="text">
                                     <div class="input-group-append">
                                         <button class="btn btn-success" (click)="buscarUsuarioLdap()" type="button">Buscar</button>
                                     </div>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Contraseña</label>
-                                <input class="form-control" formControlName="usupas" placeholder="Contraseña" name="usupas" type="password">
+                                <input class="form-control" maxlength="20" formControlName="usupas" placeholder="Contraseña" name="usupas" type="password">
                             </div>
                         </div>
                         <div [hidden]="selectedTabId != 'personal'">
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="form-group col-md-9">
                                     <label>Número</label>
-                                    <input class="form-control" [ngClass]="{'is-valid': form.get('usudni').valid, 'is-invalid': form.get('usudni').invalid }" formControlName="usudni" placeholder="Número" name="usudni" type="text">
+                                    <input class="form-control" maxlength="12" [ngClass]="{'is-valid': form.get('usudni').valid, 'is-invalid': form.get('usudni').invalid }" formControlName="usudni" placeholder="Número" name="usudni" type="text">
                                     <div class="invalid-feedback">
                                         Ingrese el nro documento.
                                     </div>
@@ -145,18 +145,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Nombres</label>
-                                <input class="form-control" [ngClass]="{'is-valid': form.get('usunom').valid, 'is-invalid': form.get('usunom').invalid }" formControlName="usunom" placeholder="Nombre" name="usunom" type="text">
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usunom').valid, 'is-invalid': form.get('usunom').invalid }" formControlName="usunom" placeholder="Nombre" name="usunom" type="text">
                             </div>
                             <div class="form-group">
                                 <label>Apellido Paterno</label>
-                                <input class="form-control" [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapepat" placeholder="Apellido Paterno" name="usuapepat" type="text">
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapepat" placeholder="Apellido Paterno" name="usuapepat" type="text">
                                 <div class="invalid-feedback">
                                     Ingrese el apellido.
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Apellido Materno</label>
-                                <input class="form-control" [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapemat" placeholder="Apellido Materno" name="usuapemat" type="text">
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapemat" placeholder="Apellido Materno" name="usuapemat" type="text">
                                 <div class="invalid-feedback">
                                     Ingrese el apellido.
                                 </div>
@@ -184,11 +184,11 @@
                         <div [hidden]="selectedTabId != 'trabajo'">
                             <div class="form-group">
                                 <label>Área</label>
-                                <input class="form-control" formControlName="usuarea" placeholder="Área" name="usuarea" type="text">
+                                <input class="form-control" maxlength="20" upperCase formControlName="usuarea" placeholder="Área" name="usuarea" type="text">
                             </div>
                             <div class="form-group">
                                 <label>Cargo</label>
-                                <input class="form-control" formControlName="usucargo" placeholder="Cargo" name="usucargo" type="text">
+                                <input class="form-control" maxlength="20" upperCase formControlName="usucargo" placeholder="Cargo" name="usucargo" type="text">
                             </div>
                         </div>
                         <div [hidden]="selectedTabId != 'contacto'">
@@ -199,7 +199,7 @@
                                              <i class="fa fa-envelope-o"></i>
                                          </span>
                                     </div>
-                                    <input class="form-control" [ngClass]="{'is-valid': form.get('usucor').valid, 'is-invalid': form.get('usucor').invalid }" formControlName="usucor" placeholder="Correo" name="usucor" type="text">
+                                    <input class="form-control" maxlength="20" upperCase [ngClass]="{'is-valid': form.get('usucor').valid, 'is-invalid': form.get('usucor').invalid }" formControlName="usucor" placeholder="Correo" name="usucor" type="text">
                                     <div class="invalid-feedback">
                                         Ingrese el email.
                                     </div>
@@ -212,7 +212,7 @@
                                              <i class="fa fa-phone"></i>
                                         </span>
                                     </div>
-                                    <input class="form-control" formControlName="usuanexo" placeholder="Anexo" name="usuanexo" type="text"></div>
+                                    <input class="form-control" maxlength="10" upperCase formControlName="usuanexo" placeholder="Anexo" name="usuanexo" type="text"></div>
                             </div>
                             <div class="form-group"><label class="text-gray">Dirección</label>
                                 <div class="input-group">
@@ -221,7 +221,7 @@
                                              <i class="fa fa-map-marker"></i>
                                          </span>
                                     </div>
-                                    <input class="form-control" formControlName="usudirec" placeholder="Dirección" name="usudirec" type="text">
+                                    <input class="form-control" maxlength="20" upperCase formControlName="usudirec" placeholder="Dirección" name="usudirec" type="text">
                                 </div>
                             </div>
                         </div>

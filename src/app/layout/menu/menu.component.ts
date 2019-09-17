@@ -21,6 +21,7 @@ export class MenuComponent implements OnInit {
   menus: Menu[] = [];
   listaMenus: Menu[] = [];
   page = 0;
+  pageSize = 7;
   closeResult: string;
 
   constructor(private formBuilder: FormBuilder,
@@ -73,6 +74,7 @@ export class MenuComponent implements OnInit {
                                                x.mennom.toLocaleLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1);
       this.total = this.listaMenus.length;
     }
+    console.log(this.listaMenus);
   }
 
   gridMenu() {

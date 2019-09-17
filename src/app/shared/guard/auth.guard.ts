@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
         const helper = new JwtHelperService();
         let rpta = this.service.estaLogeado();
         console.log('rpta = ' + rpta);
-        
         if (!rpta) {
           sessionStorage.clear();
           this.router.navigate(['/login']);

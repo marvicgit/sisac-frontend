@@ -57,7 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let s of listaSistemas | paginate: { itemsPerPage: 7, currentPage: page }">
+                                            <tr *ngFor="let s of listaSistemas | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
                                                 <td>{{ s.siscod }}</td>
                                                 <td>{{ s.sisnom }}</td>
                                                 <td>{{ s.sissig }}</td>
@@ -93,7 +93,7 @@
                     <label>Nombre</label>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="text" upperCase class="form-control text-uppercase" [ngClass]="{'is-valid': form.get('sisnom').valid, 'is-invalid': form.get('sisnom').invalid }" formControlName="sisnom" placeholder="Nombre" name="sisnom">
+                            <input type="text" maxlength="50" class="form-control text-uppercase" [ngClass]="{'is-valid': form.get('sisnom').valid, 'is-invalid': form.get('sisnom').invalid }" formControlName="sisnom" placeholder="Nombre" name="sisnom">
                             <div class="invalid-feedback">
                                 Ingrese el nombre.
                             </div>
@@ -102,7 +102,7 @@
                     <label>Descripción</label>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="text" upperCase class="form-control" [ngClass]="{'is-valid': form.get('sisdes').valid, 'is-invalid': form.get('sisdes').invalid }" formControlName="sisdes" placeholder="Descripción" name="sisdes">
+                            <input type="text" maxlength="100" class="form-control" [ngClass]="{'is-valid': form.get('sisdes').valid, 'is-invalid': form.get('sisdes').invalid }" formControlName="sisdes" placeholder="Descripción" name="sisdes">
                             <div class="invalid-feedback">
                                 Ingrese el descripción.
                             </div>
@@ -111,7 +111,7 @@
                     <label>Sigla</label>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="text" upperCase class="form-control" [ngClass]="{'is-valid': form.get('sissig').valid, 'is-invalid': form.get('sissig').invalid }" formControlName="sissig" placeholder="Sigla" name="sissig">
+                            <input type="text" upperCase maxlength="20" class="form-control" [ngClass]="{'is-valid': form.get('sissig').valid, 'is-invalid': form.get('sissig').invalid }" formControlName="sissig" placeholder="Sigla" name="sissig">
                             <div class="invalid-feedback">
                                 Ingrese la sigla.
                             </div>

@@ -16,6 +16,7 @@ export class SistemaComponent implements OnInit {
   listaSistemas: Sistema[] = [];
   page = 0;
   total = 0;
+  pageSize = 7;
   closeResult: string;
   activoInactivo: string[] = [ '1', '0'];
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, config: NgbModalConfig, private service: SistemaService) {

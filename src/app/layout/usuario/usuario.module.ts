@@ -8,6 +8,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 
 @NgModule({
   declarations: [UsuarioComponent],
@@ -19,7 +20,8 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
     NgxPaginationModule,
     NgbModule,
     NgSelectModule,
-    AngularDualListBoxModule 
+    AngularDualListBoxModule,
+    NgxUpperCaseDirectiveModule
   ]
 })
 export class UsuarioModule { }

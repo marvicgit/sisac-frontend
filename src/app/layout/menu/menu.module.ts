@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
+import { NgxUpperCaseDirectiveModule } from 'ngx-upper-case-directive';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SharedPipesModule } from 'src/app/shared/pipes/shared-pipes.module';
     NgxPaginationModule,
     NgbModule,
     NgSelectModule,
-    SharedPipesModule
+    SharedPipesModule,
+    NgxUpperCaseDirectiveModule
   ]
 })
 export class MenuModule { }

@@ -6,7 +6,7 @@
             <form role="form">
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="usuario" name="usuario" class="form-control input-underline input-lg" id="" placeholder="Usuario">
+                        <input type="text" maxlength="30" [(ngModel)]="usuario" name="usuario" class="form-control input-underline input-lg" id="" placeholder="Usuario">
                     </div>
                 </div>
                 <a class="btn rounded-btn" (click)="enviar()">Enviar</a> &nbsp;

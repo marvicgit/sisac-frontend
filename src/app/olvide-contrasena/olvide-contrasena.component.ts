@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login/login.service';
 import { ActivatedRoute } from '@angular/router';
+import { routerTransition } from '../router.animations';
 
 @Component({
   selector: 'app-olvide-contrasena',
   templateUrl: './olvide-contrasena.component.html',
-  styleUrls: ['./olvide-contrasena.component.scss']
+  styleUrls: ['./olvide-contrasena.component.scss'],
+  animations: [routerTransition()]
 })
 export class OlvideContrasenaComponent implements OnInit {
   usuario: string;
