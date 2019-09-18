@@ -14,7 +14,7 @@ export class Usuario {
     public usuarea: string = '';
     public usucargo: string = '';
     public usudirec: string = '';
-    public ususexo: number = 0;
+    public ususexo = 0;
     public usureg: string = '';
     public fecreg: string = '';
     public fecmod: string = '';

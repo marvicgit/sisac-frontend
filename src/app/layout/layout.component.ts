@@ -27,6 +27,7 @@ export class LayoutComponent implements OnInit {
       this.collapedSideBar = $event;
   }
 
+  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
     setTimeout(() => {
         this.style = document.createElement('style');

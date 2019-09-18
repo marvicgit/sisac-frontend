@@ -1,25 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
-import { Observable } from 'rxjs';
 import { NgbModal, ModalDismissReasons, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { UsuarioService } from './usuario.service';
 import { Router } from '@angular/router';
-import { Sistema } from '../../models/sistema';
-import { SistemaService } from '../sistema/sistema.service';
-import { Rol } from '../../models/rol';
-import { RolService } from '../rol/rol.service';
-import { Funcionalidad } from '../../models/funcionalidad';
-import { FuncionalidadService } from '../funcionalidad/funcionalidad.service';
 import Swal from 'sweetalert2';
-import { DualListComponent } from 'angular-dual-listbox';
-import { RolMenu } from '../../models/rolMenu';
-import { RolMenService } from '../rol-men/rol-men.service';
-import { SistemaRolDTO } from '../../models/sistemaRolDTO';
-import { UsuarioSisRolDTO } from 'src/app/models/usuarioSisRolDTO';
-import { UsuarioRolFunService } from '../usuario-rol-fun/usuario-rol-fun.service';
-import { UsuarioSistemaDTO } from 'src/app/models/usuarioSistemaDTO';
-import { UsuarioSistemaRolDTO } from 'src/app/models/usuarioSistemaRolDTO';
 
 @Component({
   selector: 'app-usuario',
@@ -62,8 +47,8 @@ export class UsuarioComponent implements OnInit {
       usucargo:  new FormControl(null),
       usudirec:  new FormControl(null),
       usuest: new FormControl('1'),
-      usulog: new FormControl(null, Validators.required),
-      usupas: new FormControl(null, Validators.required),
+      usulog: new FormControl(null),
+      usupas: new FormControl(null),
       usucor: new FormControl(null, [Validators.required, Validators.email]),
       usuanexo: new FormControl(null),
       usureg: '',
@@ -121,13 +106,13 @@ export class UsuarioComponent implements OnInit {
       this.form.get('usunom').setValue(data.usunom);
       this.form.get('usuapepat').setValue(data.usuapepat);
       this.form.get('usuapemat').setValue(data.usuapemat);
-      this.form.get('ususexo').setValue(data.ususexo);
+      this.form.get('ususexo').setValue(data.ususexo.toString());
       this.form.get('usuarea').setValue(data.usuarea);
       this.form.get('usucargo').setValue(data.usucargo);
       this.form.get('usudirec').setValue(data.usudirec);
       this.form.get('usuest').setValue(data.usuest.toString());
       this.form.get('usulog').setValue(data.usulog);
-      this.form.get('usupas').setValue(data.usupas);
+      //this.form.get('usupas').setValue(data.usupas);
       this.form.get('usucor').setValue(data.usucor);
       this.form.get('usuanexo').setValue(data.usuanexo);
     } else {

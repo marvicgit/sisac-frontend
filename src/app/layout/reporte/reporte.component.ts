@@ -17,6 +17,7 @@ import { ReporteDTO } from '../../models/reporteDTO';
 export class ReporteComponent implements OnInit {
   form: FormGroup;
   reporte: ReporteDTO[] = [];
+  filtrarReporte: ReporteDTO[] = [];
   sistemas: Sistema[] = [];
   roles: Rol[] = [];
   funcionalidades: Funcionalidad[] = [];
@@ -42,6 +43,7 @@ export class ReporteComponent implements OnInit {
   listar() {
     this.serviceUsuario.ObtenerUsuarioDetalle().subscribe((data: ReporteDTO[]) => {
       this.reporte = data;
+      this.filtrarReporte = data;
       this.total = data.length;
     });
   }
@@ -66,12 +68,47 @@ export class ReporteComponent implements OnInit {
 
   iniciarForm() {
     this.form = this.formBuilder.group({
-      usuario: new FormControl(''),
+      usulog: new FormControl(''),
       siscod: new FormControl(''),
       rolcod: new FormControl(''),
-      funcod: new FormControl(''),
       estreg: new FormControl('')
     });
+  }
+
+  buscar() {
+    this.filtrarReporte = this.reporte;
+    const usulog = this.form.get('usulog').value;
+    const siscod = this.form.get('siscod').value;
+    const rolcod = this.form.get('rolcod').value;
+    console.log(usulog);
+    console.log(siscod);
+    console.log(rolcod);
+    if (usulog && siscod && rolcod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.usulog == usulog && x.siscod == siscod && x.rolcod === rolcod);
+      this.total = this.filtrarReporte.length;
+    } else if (usulog && siscod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.usulog == usulog && x.siscod == siscod);
+      this.total = this.filtrarReporte.length;
+    } else if (usulog && rolcod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.usulog == usulog && x.rolcod == rolcod);
+      this.total = this.filtrarReporte.length;
+    } else if (siscod && rolcod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.siscod == siscod && x.rolcod == rolcod);
+      this.total = this.filtrarReporte.length;
+    } else if (usulog) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.usulog == usulog);
+      this.total = this.filtrarReporte.length;
+    } else if (siscod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.siscod == siscod);
+      this.total = this.filtrarReporte.length;
+    } else if (rolcod) {
+      this.filtrarReporte = this.filtrarReporte.filter(x => x.rolcod == rolcod);
+      this.total = this.filtrarReporte.length;
+    } else {
+      this.filtrarReporte = this.reporte;
+      this.total = this.filtrarReporte.length;
+    }
+
   }
 
 }
