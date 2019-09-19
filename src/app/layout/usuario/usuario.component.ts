@@ -46,7 +46,7 @@ export class UsuarioComponent implements OnInit {
       usuarea:  new FormControl(null),
       usucargo:  new FormControl(null),
       usudirec:  new FormControl(null),
-      usuest: new FormControl('1'),
+      estreg: new FormControl('1'),
       usulog: new FormControl(null),
       usupas: new FormControl(null),
       usucor: new FormControl(null, [Validators.required, Validators.email]),
@@ -110,7 +110,7 @@ export class UsuarioComponent implements OnInit {
       this.form.get('usuarea').setValue(data.usuarea);
       this.form.get('usucargo').setValue(data.usucargo);
       this.form.get('usudirec').setValue(data.usudirec);
-      this.form.get('usuest').setValue(data.usuest.toString());
+      this.form.get('estreg').setValue(data.estreg);
       this.form.get('usulog').setValue(data.usulog);
       //this.form.get('usupas').setValue(data.usupas);
       this.form.get('usucor').setValue(data.usucor);
@@ -136,6 +136,27 @@ export class UsuarioComponent implements OnInit {
   }
 
   elimnar(data: Usuario) {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar?',
+      text: 'No podras revertirlo!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminarlo!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.service.eliminar(data.usucod).subscribe(() => {
+          Swal.fire(
+            'Eliminado!',
+            'El registro fue eliminado correctamente.',
+            'success'
+          );
+          this.listar();
+        });
+      }
+    });
   }
 
   registrar() {

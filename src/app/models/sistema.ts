@@ -3,7 +3,6 @@ export class Sistema {
     public sisnom: string = '';
     public sisdes: string = '';
     public sissig: string = '';
-    public sisest: string = '';
     public estreg: string = '';
     public usureg: string = '';
     public fecreg: string = '';

@@ -60,7 +60,7 @@
                                                 <td>{{ item.funcod }}</td>
                                                 <td>{{ item.funnom }}</td>
                                                 <td>{{ item.funsig }}</td>
-                                                <td><span class="badge" [ngClass]="{'badge-success': item.estreg == '1', 'badge-danger': item.estreg == '0' }">{{ item.estreg.trim() == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.estreg == '1', 'badge-danger': item.estreg == '0' }">{{ item.estreg == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="open(content, item)"><i class="fa fa-pencil"></i></button>
                                                     <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button>
@@ -118,11 +118,11 @@
                     <label>Estado</label>
                     <div class="form-group">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline1" formControlName="estreg" name="estreg" value="1" class="custom-control-input">
+                            <input type="radio" id="customRadioInline1" formControlName="estreg" name="estreg" [value]="1" class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline1">Activo</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline2" formControlName="estreg" name="estreg" value="0" class="custom-control-input">
+                            <input type="radio" id="customRadioInline2" formControlName="estreg" name="estreg" [value]="0" class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline2">Inactivo</label>
                         </div>
                     </div>

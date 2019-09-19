@@ -61,7 +61,7 @@
                                                 <td>{{ s.siscod }}</td>
                                                 <td>{{ s.sisnom }}</td>
                                                 <td>{{ s.sissig }}</td>
-                                                <td><span class="badge" [ngClass]="{'badge-success': s.estreg == '1', 'badge-danger': s.estreg == '0' }">{{ s.estreg.trim() == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': s.estreg == 1, 'badge-danger': s.estreg == 0 }">{{ s.estreg == 1 ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="open(content, s)"><i class="fa fa-pencil"></i></button>
                                                     <button class="btn btn-sm btn-link" (click)="elimnar(s)"><i class="fa fa-trash"></i></button>
@@ -120,11 +120,11 @@
                     <label>Estado</label>
                     <div class="form-group">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline1" formControlName="estreg" name="estreg" value="1" class="custom-control-input">
+                            <input type="radio" id="customRadioInline1" formControlName="estreg" name="estreg" [value]=1 checked class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline1">Activo</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="customRadioInline2" formControlName="estreg" name="estreg" value="0" class="custom-control-input">
+                            <input type="radio" id="customRadioInline2" formControlName="estreg" name="estreg" [value]=0 class="custom-control-input">
                             <label class="custom-control-label" for="customRadioInline2">Inactivo</label>
                         </div>
                     </div>

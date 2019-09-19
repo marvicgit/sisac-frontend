@@ -56,13 +56,6 @@ export class LoginComponent implements OnInit {
               });
               this.router.navigate(['/home']);
             }
-          }, err => {
-            console.log(err);
-            Swal.fire({
-                type: 'error',
-                title: 'Error al autenticar',
-                text: err.error.error
-              });
           });
     }
   }

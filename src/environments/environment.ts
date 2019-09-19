@@ -7,6 +7,7 @@ export const environment = {
   HOST_URL: 'http://localhost:8080',
   TOKEN_NAME: 'access_token',
   TOKE_USER: 'username',
+  REINTENTOS: 3,
   TOKEN_AUTH_USERNAME: 'SISAC',
   TOKEN_AUTH_PASSWORD: 'sisacse2019Aate'
 };

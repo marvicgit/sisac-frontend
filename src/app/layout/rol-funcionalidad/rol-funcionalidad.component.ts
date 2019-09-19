@@ -176,7 +176,7 @@ export class RolFuncionalidadComponent implements OnInit {
   elimnar(data: SisRolFuncionalidadDTO) {
     Swal.fire({
       title: '¿Estas seguro de eliminar?',
-      text: 'No podras revertirlo!',
+      text: 'No se podrá acceder a este ítem luego de eliminarlo!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

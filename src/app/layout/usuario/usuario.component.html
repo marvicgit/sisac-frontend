@@ -65,11 +65,11 @@
                                                 <td>{{ item.usunom + ' ' + item.usuapepat + ' ' + item.usuapemat }}</td>
                                                 <td>{{ item.usulog }}</td>
                                                 <td>{{ item.usucor }}</td>
-                                                <td><span class="badge" [ngClass]="{'badge-success': item.usublo == '0', 'badge-danger': item.usublo == '1' }">{{ item.usublo.trim() == '1' ? 'SI' : 'NO' }}</span></td>
-                                                <td><span class="badge" [ngClass]="{'badge-success': item.usuest == '1', 'badge-danger': item.usuest == '0' }">{{ item.usuest == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.usublo == 0, 'badge-danger': item.usublo == 1 }">{{ item.usublo == 1 ? 'SI' : 'NO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.estreg == 1, 'badge-danger': item.estreg == 0 }">{{ item.estreg == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="open(content, item)"><i class="fa fa-pencil"></i></button>
-                                                    <!-- <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button> -->
+                                                    <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -199,7 +199,7 @@
                                              <i class="fa fa-envelope-o"></i>
                                          </span>
                                     </div>
-                                    <input class="form-control" maxlength="20" upperCase [ngClass]="{'is-valid': form.get('usucor').valid, 'is-invalid': form.get('usucor').invalid }" formControlName="usucor" placeholder="Correo" name="usucor" type="text">
+                                    <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usucor').valid, 'is-invalid': form.get('usucor').invalid }" formControlName="usucor" placeholder="Correo" name="usucor" type="text">
                                     <div class="invalid-feedback">
                                         Ingrese el email.
                                     </div>
@@ -227,11 +227,11 @@
                         </div>
                         <div [hidden]="selectedTabId != 'configuracion'">
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input radio-dark-gray" formControlName="usuest" name="usuest" value="1" id="radioActive" type="radio">
+                                <input class="custom-control-input radio-dark-gray" formControlName="estreg" name="estreg" [value]="1" id="radioActive" type="radio">
                                 <label class="custom-control-label" for="radioActive">Activo</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input radio-dark-gray" formControlName="usuest" name="usuest" value="0" id="radioDeleted" type="radio">
+                                <input class="custom-control-input radio-dark-gray" formControlName="estreg" name="estreg" [value]="0" id="radioDeleted" type="radio">
                                 <label class="custom-control-label" for="radioDeleted">Inactivo</label>
                             </div>
                         </div>
