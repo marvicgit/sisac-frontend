@@ -46,8 +46,8 @@ export class FuncionalidadComponent implements OnInit {
       funnom: new FormControl('', Validators.required),
       fundes: new FormControl('', Validators.required),
       funsig: new FormControl('', Validators.required),
-      estreg: new FormControl('1'),
-      usureg: new FormControl(''),
+      estreg: new FormControl(1),
+      usureg: new FormControl(sessionStorage.getItem('username')),
       usumod: new FormControl('')
     });
   }
@@ -64,7 +64,6 @@ export class FuncionalidadComponent implements OnInit {
   registrar() {
     if (this.form.valid) {
       if (this.form.get('funcod').value == null) {
-        this.form.get('usureg').setValue('1');
         this.service.registrar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
@@ -77,7 +76,7 @@ export class FuncionalidadComponent implements OnInit {
           this.listar();
         });
       } else {
-        this.form.get('usumod').setValue('1');
+        this.form.get('usumod').setValue(sessionStorage.getItem('username'));
         this.service.modificar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({

@@ -83,7 +83,7 @@ export class RolMenComponent implements OnInit {
       rolcod: new FormControl('', Validators.required),
       funcod: new FormControl(''),
       estreg: new FormControl('1'),
-      usureg: null,
+      usureg: new FormControl(sessionStorage.getItem('username')),
       usumod: null,
     });
   }

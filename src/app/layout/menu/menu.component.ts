@@ -47,14 +47,14 @@ export class MenuComponent implements OnInit {
         mensig: new FormControl(null, [Validators.required]),
         menrut: new FormControl(null),
         menord: new FormControl(null, [Validators.required]),
-        estreg: new FormControl('1'),
+        estreg: new FormControl(1),
         sistema: new FormGroup({
             siscod: new FormControl('', Validators.required),
         }),
         padre: new FormGroup({
             mencod: new FormControl(null),
         }),
-        usureg: null,
+        usureg: new FormControl(sessionStorage.getItem('username')),
         usumod: null,
         fecmod: null
     });
@@ -92,9 +92,7 @@ export class MenuComponent implements OnInit {
         data.padre = null;
       }
       if (data.mencod == null) {
-        data.usureg = '1';
-        data.menest = '1';
-        console.log(data);
+        //console.log(data);
         this.service.registrar(data).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
@@ -107,7 +105,7 @@ export class MenuComponent implements OnInit {
           this.gridMenu();
         });
       } else {
-        data.usumod = '1';
+        data.usumod = sessionStorage.getItem('username');
         this.service.modificar(data).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({

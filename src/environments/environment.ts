@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  HOST_URL: 'http://localhost:8080',
+  production: true,
+  HOST_URL: 'http://172.19.0.109:8080',
   TOKEN_NAME: 'access_token',
   TOKE_USER: 'username',
   REINTENTOS: 3,

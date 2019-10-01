@@ -20,7 +20,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                     if (event.body && event.body.error === true && event.body.errorMessage) {
                         throw new Error(event.body.errorMessage);
                     }/*else{
-                        this.snackBar.open("EXITO", 'AVISO', { duration: 5000 });    
+                        this.snackBar.open("EXITO", 'AVISO', { duration: 5000 });
                     }*/
                 }
             })).pipe(catchError((err) => {
@@ -33,8 +33,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                         'error'
                       );
                    // this.snackBar.open(err.message, 'ERROR 400', { duration: 5000 });
-                }
-                else if (err.status === 401) {
+                } else if (err.status === 401) {
                     Swal.fire(
                         'Error!',
                         err.message,
@@ -42,8 +41,7 @@ export class ServerErrorsInterceptor implements HttpInterceptor {
                       );
                     //this.snackBar.open(err.error.message, 'ERROR 401', { duration: 5000 });
                     //this.router.navigate(['/login']);
-                }
-                else if (err.status === 500) {
+                } else if (err.status === 500) {
                     Swal.fire(
                         'Error!',
                         err.message,

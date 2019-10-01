@@ -35,7 +35,7 @@ export class SistemaComponent implements OnInit {
         sisdes: new FormControl('', [Validators.required, Validators.maxLength(100)]),
         sissig: new FormControl('', [Validators.required, Validators.maxLength(15)]),
         estreg: new FormControl(1),
-        usureg: '',
+        usureg: new FormControl(sessionStorage.getItem('username')),
         fecmod: '',
         fecreg: '',
         usumod: ''
@@ -63,8 +63,6 @@ export class SistemaComponent implements OnInit {
   registrar() {
     if (this.form.valid) {
       if (this.form.get('siscod').value == null) {
-        this.form.get('fecreg').setValue(new Date());
-        this.form.get('usureg').setValue('1');
         this.service.registrar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
@@ -77,8 +75,7 @@ export class SistemaComponent implements OnInit {
           this.listar();
         });
       } else {
-        this.form.get('fecmod').setValue(new Date());
-        this.form.get('usumod').setValue('1');
+        this.form.get('usumod').setValue(sessionStorage.getItem('username'));
         this.service.modificar(this.form.value).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({

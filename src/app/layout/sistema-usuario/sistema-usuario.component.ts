@@ -27,15 +27,15 @@ export class SistemaUsuarioComponent implements OnInit {
   usuarios: Usuario[] = [];
   roles: SistemaRolDTO[] = [];
   rolesFiltrados: SistemaRolDTO[] = [];
-  page: number = 0;
-  total: number = 0;
+  page = 0;
+  total = 0;
   searchValue: string;
   closeResult: string;
   seconds = true;
-  activoInactivo: string[] = [ '1','0' ];
-  constructor(private formBuilder: FormBuilder, 
-              private modalService: NgbModal, 
-              config: NgbModalConfig, 
+  activoInactivo: string[] = [ '1', '0' ];
+  constructor(private formBuilder: FormBuilder,
+              private modalService: NgbModal,
+              config: NgbModalConfig,
               private serviceUsuario: UsuarioService,
               private service: SistemaUsuarioService,
               private serviceSistema: SistemaService,
@@ -43,7 +43,6 @@ export class SistemaUsuarioComponent implements OnInit {
     config.backdrop = 'static';
     config.keyboard = false;
    }
-  
   ngOnInit() {
     this.iniciarForm();
     this.listarSistema();
@@ -58,29 +57,28 @@ export class SistemaUsuarioComponent implements OnInit {
         siscod: new FormControl(null, Validators.required),
         rolcod: new FormControl(null, Validators.required),
         estreg: new FormControl('1'),
-        usureg: '',
+        usureg: new FormControl(sessionStorage.getItem('username')),
         fecmod: '',
         fecreg: '',
         usumod: ''
       });
   }
-  
   listarUsuario() {
     this.serviceUsuario.listar().subscribe(data => {
-      this.usuarios = data;  
-    })
+      this.usuarios = data;
+    });
   }
   listarUsuarioSistemaRol() {
-    this.service.listarUsuarioSistemaRol().subscribe((data: UsuarioSistemaRolDTO[]) => {     
-      this.usuarioSistemas = data;      
+    this.service.listarUsuarioSistemaRol().subscribe((data: UsuarioSistemaRolDTO[]) => {
+      this.usuarioSistemas = data;
       this.total = data.length;
     });
   }
 
   listarSistema() {
-    this.serviceSistema.listar().subscribe( data => {    
-      this.sistemas = data;      
-    })
+    this.serviceSistema.listar().subscribe( data => {
+      this.sistemas = data;
+    });
   }
 
   listarSistemaRol() {
@@ -90,10 +88,9 @@ export class SistemaUsuarioComponent implements OnInit {
   }
 
   filtrarRolesxSistema(){
-    let id: number = this.form.get('siscod').value;
-    this.rolesFiltrados = this.roles.filter(x => x.siscod === id);  
+    const id: number = this.form.get('siscod').value;
+    this.rolesFiltrados = this.roles.filter(x => x.siscod === id);
     console.log(this.rolesFiltrados);
-    
   }
 
   changeSistema() {
@@ -102,17 +99,17 @@ export class SistemaUsuarioComponent implements OnInit {
 
 
   registrar() {
-    if(this.form.valid) {
-      let data: UsuarioSisRolDTO = new UsuarioSisRolDTO();
+    if (this.form.valid) {
+      const data: UsuarioSisRolDTO = new UsuarioSisRolDTO();
       data.rol = new Rol();
       data.rol.rolcod = this.form.get('rolcod').value;
       data.usuario = new Usuario();
       data.usuario.usucod = this.form.get('usucod').value;
       data.siscod = this.form.get('siscod').value;
-      data.usureg = "1";
-      console.log(data);
+      data.usureg = sessionStorage.getItem('username');
+     // console.log(data);
 
-      this.service.registrar(data).subscribe(data =>{
+      this.service.registrar(data).subscribe(() => {
           this.modalService.dismissAll();
           Swal.fire({
             position: 'top-end',
@@ -189,9 +186,8 @@ export class SistemaUsuarioComponent implements OnInit {
   //       });
   //     }
   //   })
-  // } 
+  // }
 
-  
 
     open(content, sistema?: Sistema) {
         // if(sistema != null) {
@@ -199,7 +195,6 @@ export class SistemaUsuarioComponent implements OnInit {
         // } else {
         //     this.iniciarForm();
         // }
-        
         this.modalService.open(content).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
@@ -216,6 +211,6 @@ export class SistemaUsuarioComponent implements OnInit {
         } else {
             return  `with: ${reason}`;
         }
-    }   
+    }
 
 }

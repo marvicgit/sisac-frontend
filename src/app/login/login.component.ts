@@ -4,7 +4,6 @@ import { routerTransition } from '../router.animations';
 import { LoginService } from './login.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Permiso } from '../models/permiso';
 import { SistemaUsuario } from '../models/sistemaUsuario';
@@ -35,9 +34,7 @@ export class LoginComponent implements OnInit {
         usupas: new FormControl(null, Validators.required),
         });
     }
-    // onLoggedin() {
-    //   this.router.navigate(['/home']);
-    // }
+
     onLoggedin() {
       if (this.form.valid) {
         this.service.login(this.form.value).subscribe(data => {

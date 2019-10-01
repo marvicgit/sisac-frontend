@@ -24,11 +24,11 @@ export class OlvideContrasenaComponent implements OnInit {
     this.porcentaje = 99;
     this.service.enviarCorreo(this.usuario).subscribe(data => {
       if (data === 1) {
-        this.mensaje = "Se enviaron las indicaciones al correo."
-        this.error = null
+        this.mensaje = 'Se enviaron las indicaciones al correo.',
+        this.error = null,
         this.porcentaje = 100;
       } else {
-        this.error = "El usuario ingresado no existe";
+        this.error = 'El usuario ingresado no existe';
         this.porcentaje = 0;
       }
     });

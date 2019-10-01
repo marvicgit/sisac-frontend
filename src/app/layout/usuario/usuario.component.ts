@@ -46,12 +46,12 @@ export class UsuarioComponent implements OnInit {
       usuarea:  new FormControl(null),
       usucargo:  new FormControl(null),
       usudirec:  new FormControl(null),
-      estreg: new FormControl('1'),
+      estreg: new FormControl(1),
       usulog: new FormControl(null),
       usupas: new FormControl(null),
       usucor: new FormControl(null, [Validators.required, Validators.email]),
       usuanexo: new FormControl(null),
-      usureg: '',
+      usureg: new FormControl(sessionStorage.getItem('username')),
       usumod: ''
       });
   }
@@ -85,12 +85,11 @@ export class UsuarioComponent implements OnInit {
 
   openUsuario(data?: Usuario) {
     if (data != null) {
-        //this.form.setValue(data);
     } else {
       this.router.navigate(['/usuario/nuevo']);
     }
   }
-  buscarUsuarioLdap(){
+  buscarUsuarioLdap() {
     this.service.buscarUsuarioLdap(this.form.get('usulog').value).subscribe(data => {
       this.form.get('usucor').setValue(data.usucor)
       this.form.get('usunom').setValue(data.usunom);
@@ -112,7 +111,7 @@ export class UsuarioComponent implements OnInit {
       this.form.get('usudirec').setValue(data.usudirec);
       this.form.get('estreg').setValue(data.estreg);
       this.form.get('usulog').setValue(data.usulog);
-      //this.form.get('usupas').setValue(data.usupas);
+      this.form.get('usumod').setValue(sessionStorage.getItem('username'));
       this.form.get('usucor').setValue(data.usucor);
       this.form.get('usuanexo').setValue(data.usuanexo);
     } else {

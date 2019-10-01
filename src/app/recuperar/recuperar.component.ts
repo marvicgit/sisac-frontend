@@ -3,8 +3,7 @@ import { LoginService } from '../login/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from '../shared';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Usuario } from '../models/usuario';
-import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-recuperar',
@@ -54,14 +53,21 @@ export class RecuperarComponent implements OnInit {
   }
 
   onSubmit() {
-    let clave: string = this.form.value.confirmPassword;
+    const clave: string = this.form.value.confirmPassword;
     this.service.restablecer(this.token, clave).subscribe(data => {
       if (data === 1) {
-        this.rpta = 1;
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Actualizado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.router.navigate(['/login']);
+      } else {
+        this.tokenValido = false;
       }
-    }, (err => {
-      this.rpta = 0;
-    }));
+    });
   }
 
 }

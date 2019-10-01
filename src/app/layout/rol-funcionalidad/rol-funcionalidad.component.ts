@@ -113,7 +113,7 @@ export class RolFuncionalidadComponent implements OnInit {
       rolcod: new FormControl('', Validators.required),
       funcod: new FormControl(''),
       estreg: new FormControl('1'),
-      usureg: null,
+      usureg: new FormControl(sessionStorage.getItem('username')),
       usumod: null,
     });
   }
@@ -126,7 +126,7 @@ export class RolFuncionalidadComponent implements OnInit {
       fun.funcod = l;
       lstFuncionalidad.push(fun);
    });
-    console.log(this.form.valid);
+    //console.log(this.form.valid);
     if (this.form.valid) {
       const datos: RolFuncionalidadDTO = new RolFuncionalidadDTO();
       datos.siscod = this.form.get('siscod').value;

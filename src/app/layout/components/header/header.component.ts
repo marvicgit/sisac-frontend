@@ -55,8 +55,8 @@ export class HeaderComponent implements OnInit {
     }
 
     irCambiarClave(){
-        let tk = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME));
-        let token = tk != null ? tk.access_token : '';
-        this.router.navigate(['/cambiar-contrasena/' + token]);    
+        const tk = JSON.parse(sessionStorage.getItem(environment.TOKEN_NAME));
+        const token = tk != null ? tk.access_token : '';
+        this.router.navigate(['/cambiar-contrasena/' + token]);
     }
 }

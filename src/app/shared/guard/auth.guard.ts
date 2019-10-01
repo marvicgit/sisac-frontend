@@ -45,13 +45,13 @@ export class AuthGuard implements CanActivate {
             //     return false;
             //   }
             // }));
-            console.log("no expirado");
+            //console.log("no expirado");
             
             return true;
     
           } else {
             //si el token ya expiro
-            console.log("expirado");
+            //console.log("expirado");
             sessionStorage.clear();
             this.router.navigate(['/login']);
             return false;

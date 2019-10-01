@@ -74,7 +74,7 @@
                                                 <th>Sistema</th>
                                                 <th>Usuario</th>
                                                 <th>Rol</th>
-                                                <th>Funcionalidad</th>
+                                                <th>Estado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -83,7 +83,7 @@
                                                 <td>{{ item.sisnom }}</td>
                                                 <td>{{ item.usulog }}</td>
                                                 <td>{{ item.rolnom }}</td>
-                                                <td><span class="badge" [ngClass]="{'badge-success': item.usuest == '1', 'badge-danger': item.usuest == '0' }">{{ item.usuest == 1 ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.estreg == '1', 'badge-danger': item.estreg == '0' }">{{ item.estreg == 1 ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
